@@ -932,3 +932,385 @@ setInterval(()=>{
 </script>
 </body>
 </html>
+<script>
+function renderBadges(){
+  const el = document.getElementById("badge-list");
+  if (!S.badges.size) {
+    el.innerHTML = '<span style="font-size:.84rem;color:#3a6660">No badges yet!</span>';
+    return;
+  }
+  el.innerHTML = [...S.badges]
+    .map(k => `<span class="badge-item">${BADGES[k]}</span>`)
+    .join("");
+}
+
+// ─── RECORD ──────────────────────────────────────────────────
+function record(){
+  const m = missions.find(x => x.id === S.currentId);
+  if (!m) return;
+
+  const result = S.results[m.id];
+  const student = document.getElementById("sname").value || "Student";
+  const ts = new Date().toLocaleTimeString();
+
+  S.log.push({ mission: `${m.emoji} ${m.title}`, student, ts, result });
+
+  const list = document.getElementById("log-list");
+  const item = document.createElement("div");
+  item.className = "log-item";
+
+  const stat = result ? `${result.score}/${result.total} pts (${result.status})` : "Not checked";
+  let ans = "";
+  if (result?.ans) {
+    ans = "\n\nAnswers:\n" + Object.entries(result.ans)
+      .map(([k, v]) => `  ${k}: ${v}`)
+      .join("\n");
+  }
+
+  item.innerHTML = `
+    <div class="log-meta">
+      <span>${m.emoji} ${m.title} · ${student}</span>
+      <span>${ts} · ${stat}</span>
+    </div>
+    <pre>${m.desc}${ans}</pre>
+  `;
+
+  if (list.querySelector(".empty-log")) list.innerHTML = "";
+  list.insertBefore(item, list.firstChild);
+  burst("Recorded!", "#7c4dff");
+}
+
+// ─── SUMMARY ─────────────────────────────────────────────────
+function showSummary(){
+  const cur = getCurLevel();
+  const acc = S.possible > 0 ? Math.round((S.earned / S.possible) * 100) : 0;
+
+  document.getElementById("sum-rank").textContent = cur.rank;
+  document.getElementById("sum-xp").textContent = S.xp;
+  document.getElementById("sum-acc").textContent = `${acc}%`;
+  document.getElementById("sum-badges").textContent = S.badges.size;
+  document.getElementById("sum-msg").textContent =
+    acc >= 90
+      ? "Outstanding performance! You demonstrated mastery of proportional relationships."
+      : acc >= 70
+      ? "Great work! You showed strong understanding across most missions."
+      : "Good effort! Review the mission feedback and try again.";
+
+  document.getElementById("summary-overlay").classList.add("show");
+  launchFullConfetti();
+}
+
+// ─── PDF GENERATION ──────────────────────────────────────────
+function makePDF(full = false){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "letter" });
+
+  const student = document.getElementById("sname").value || "Student";
+  const date = new Date().toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+
+  const cur = getCurLevel();
+  const acc = S.possible > 0 ? Math.round((S.earned / S.possible) * 100) : 0;
+  const PW = 215.9, PH = 279.4, M = 18, CW = PW - M * 2;
+  let Y = M;
+
+  const NAVY = [13,33,55], TEAL = [14,140,137], GOLD = [201,146,26];
+  const WHITE = [255,255,255], LIGHT = [240,248,252], MID = [96,117,133];
+  const OK = [14,107,56], WARN = [138,72,4], DANGER = [143,24,24];
+
+  doc.setFillColor(...NAVY);
+  doc.rect(0,0,PW,50,"F");
+  doc.setFillColor(...TEAL);
+  doc.rect(0,38,PW,12,"F");
+  doc.setFillColor(...GOLD);
+  doc.rect(0,49,PW,3,"F");
+
+  doc.setTextColor(...WHITE);
+  doc.setFont("helvetica","bold");
+  doc.setFontSize(21);
+  doc.text("Proportional Relationships Quest Lab", PW/2, 16, { align:"center" });
+
+  doc.setFont("helvetica","normal");
+  doc.setFontSize(11);
+  doc.text("Grade 6 Mathematics  ·  Standard 6.EE.C.9", PW/2, 24, { align:"center" });
+
+  doc.setFontSize(9);
+  doc.text(`Student: ${student}   |   Date: ${date}`, PW/2, 32, { align:"center" });
+
+  doc.setFont("helvetica","bold");
+  doc.setFontSize(10);
+  doc.text("STUDENT WORK REPORT  ·  PREMIER EDITION", PW/2, 44, { align:"center" });
+
+  Y = 58;
+
+  doc.setFillColor(...LIGHT);
+  doc.roundedRect(M, Y, CW, 36, 3, 3, "F");
+  doc.setFillColor(...TEAL);
+  doc.roundedRect(M, Y, CW, 7, 3, 3, "F");
+  doc.setTextColor(...WHITE);
+  doc.setFont("helvetica","bold");
+  doc.setFontSize(9);
+  doc.text("MASTERY SUMMARY", M+4, Y+5);
+
+  const stats = [
+    ["Rank", cur.rank.replace(/[^\x00-\x7F]/g, "").trim()],
+    ["XP Earned", `${S.xp} XP`],
+    ["Accuracy", `${acc}%`],
+    ["Missions", `${S.completed.size} / ${missions.length}`],
+    ["Best Combo", `x${S.bestCombo}`],
+    ["Badges", `${S.badges.size}`]
+  ];
+
+  const cw2 = CW / 3;
+  stats.forEach(([k,v], i) => {
+    const col = i % 3;
+    const row = Math.floor(i / 3);
+    const cx = M + col * cw2 + 4;
+    const cy = Y + 10 + row * 13;
+
+    doc.setTextColor(...MID);
+    doc.setFont("helvetica","normal");
+    doc.setFontSize(7);
+    doc.text(k.toUpperCase(), cx, cy);
+
+    doc.setTextColor(...NAVY);
+    doc.setFont("helvetica","bold");
+    doc.setFontSize(10);
+    doc.text(v, cx, cy + 5.5);
+  });
+
+  Y += 42;
+
+  if (S.badges.size > 0) {
+    doc.setFillColor(255,248,224);
+    doc.roundedRect(M, Y, CW, 13, 2, 2, "F");
+    doc.setFillColor(...GOLD);
+    doc.roundedRect(M, Y, 3, 13, 1, 1, "F");
+    doc.setTextColor(...GOLD);
+    doc.setFont("helvetica","bold");
+    doc.setFontSize(8);
+    doc.text("BADGES", M+6, Y+5);
+
+    doc.setTextColor(100,70,0);
+    doc.setFont("helvetica","normal");
+    doc.setFontSize(8);
+    doc.text([...S.badges].map(k => BADGES[k]).join("  ·  "), M+6, Y+10, { maxWidth: CW-10 });
+
+    Y += 17;
+  }
+
+  doc.setTextColor(...NAVY);
+  doc.setFont("helvetica","bold");
+  doc.setFontSize(12);
+  doc.text("Mission Results", M, Y+7);
+  Y += 13;
+
+  missions.forEach(m => {
+    const result = S.results[m.id];
+    const done = S.completed.has(m.id);
+    const h = full && result?.ans ? 54 : 26;
+
+    if (Y + h > PH - 22) {
+      doc.addPage();
+      Y = M;
+    }
+
+    doc.setFillColor(...(done ? [240,255,248] : [250,252,255]));
+    doc.roundedRect(M, Y, CW, h-2, 2, 2, "F");
+    doc.setFillColor(...(done ? OK : MID));
+    doc.rect(M, Y, 3, h-2, "F");
+
+    doc.setTextColor(...NAVY);
+    doc.setFont("helvetica","bold");
+    doc.setFontSize(9);
+    doc.text(`${m.id} - ${m.title}`, M+6, Y+6);
+
+    if (result) {
+      const sc = result.status === "perfect" ? OK : result.status === "partial" ? WARN : DANGER;
+      doc.setTextColor(...sc);
+      doc.setFont("helvetica","bold");
+      doc.setFontSize(8);
+      doc.text(`${result.score}/${result.total} pts  ·  ${(result.status || "").toUpperCase()}  ·  ${result.time}s`, M+6, Y+12);
+    } else {
+      doc.setTextColor(...MID);
+      doc.setFont("helvetica","italic");
+      doc.setFontSize(8);
+      doc.text("Not attempted", M+6, Y+12);
+    }
+
+    doc.setTextColor(...MID);
+    doc.setFont("helvetica","normal");
+    doc.setFontSize(7);
+    doc.text(`DOK ${m.dok}  |  ${m.points} pts possible`, PW-M-2, Y+6, { align:"right" });
+
+    doc.setTextColor(50,70,85);
+    doc.setFont("helvetica","italic");
+    doc.setFontSize(7.5);
+    doc.text(m.desc, M+6, Y+18, { maxWidth: CW-10 });
+
+    if (full && result?.ans) {
+      let ay = Y + 24;
+      doc.setTextColor(40,60,80);
+      doc.setFont("helvetica","bold");
+      doc.setFontSize(7);
+      doc.text("Student Answers:", M+6, ay);
+      ay += 5;
+
+      doc.setFont("helvetica","normal");
+      doc.setTextColor(60,80,100);
+      Object.entries(result.ans).forEach(([k,v]) => {
+        const lbl = k.replace(/([A-Z])/g, " $1").trim();
+        doc.text(`• ${lbl}: ${String(v).substring(0,100)}`, M+8, ay, { maxWidth: CW-14 });
+        ay += 4.5;
+      });
+    }
+
+    Y += h;
+  });
+
+  if (Y + 28 > PH - 22) {
+    doc.addPage();
+    Y = M;
+  }
+
+  doc.setFillColor(240,248,255);
+  doc.roundedRect(M, Y, CW, 26, 2, 2, "F");
+  doc.setFillColor(...TEAL);
+  doc.rect(M, Y, 3, 26, "F");
+  doc.setTextColor(...TEAL);
+  doc.setFont("helvetica","bold");
+  doc.setFontSize(8);
+  doc.text("TEACHER NOTES", M+6, Y+6);
+
+  doc.setTextColor(30,60,80);
+  doc.setFont("helvetica","normal");
+  doc.setFontSize(8);
+  doc.text("Next Steps:", M+6, Y+12);
+
+  doc.setDrawColor(180,200,215);
+  [18,22].forEach(o => doc.line(M+6, Y+o, PW-M-4, Y+o));
+  Y += 30;
+
+  doc.setFillColor(...NAVY);
+  doc.rect(0, PH-12, PW, 12, "F");
+  doc.setTextColor(...WHITE);
+  doc.setFont("helvetica","normal");
+  doc.setFontSize(7);
+  doc.text(`Quest Lab · Premier Edition · ${new Date().toLocaleString()}`, PW/2, PH-5, { align:"center" });
+
+  doc.save(`${student.replace(/\s+/g,"-")}_Quest_Report_${new Date().toISOString().slice(0,10)}.pdf`);
+  burst("PDF Downloaded!", "#e8533a");
+}
+
+// ─── EVENTS ──────────────────────────────────────────────────
+document.getElementById("check-btn").addEventListener("click", function(e){
+  ripple(this, e);
+  check();
+});
+
+document.getElementById("record-btn").addEventListener("click", function(e){
+  ripple(this, e);
+  record();
+});
+
+document.getElementById("retry-btn").addEventListener("click", function(e){
+  ripple(this, e);
+  if (S.currentId) load(S.currentId);
+});
+
+document.getElementById("next-btn").addEventListener("click", function(e){
+  ripple(this, e);
+  const i = missions.findIndex(m => m.id === S.currentId);
+  if (i < missions.length - 1) load(missions[i + 1].id);
+  else burst("All missions complete!", "#22c471");
+});
+
+document.getElementById("shuffle-btn").addEventListener("click", function(e){
+  ripple(this, e);
+  const u = missions.filter(m => !S.completed.has(m.id));
+  if (u.length) load(u[Math.floor(Math.random() * u.length)].id);
+  else burst("All done!", "#f2c84e");
+});
+
+document.getElementById("tip-btn").addEventListener("click", function(e){
+  ripple(this, e);
+  document.getElementById("coach-tip").textContent = TIPS[Math.floor(Math.random() * TIPS.length)];
+  burst("New tip!", "#7c4dff");
+});
+
+document.getElementById("export-btn").addEventListener("click", function(e){
+  ripple(this, e);
+  const t = S.log.map(l => `[${l.ts}] ${l.student} · ${l.mission}`).join("\n") || "No entries.";
+  navigator.clipboard.writeText(t)
+    .then(() => burst("Copied!", "#22c471"))
+    .catch(() => burst("Copy failed", "#e8533a"));
+});
+
+document.getElementById("toggle-log-btn").addEventListener("click", function(e){
+  ripple(this, e);
+  const l = document.getElementById("log-list");
+  l.style.display = l.style.display === "none" ? "" : "none";
+  this.textContent = l.style.display === "none" ? "▸ Expand" : "▾ Collapse";
+});
+
+document.getElementById("clear-log-btn").addEventListener("click", function(e){
+  ripple(this, e);
+  S.log = [];
+  document.getElementById("log-list").innerHTML = '<div class="empty-log"><div>📋</div>No entries yet.</div>';
+  burst("Log cleared", "#e8533a");
+});
+
+document.getElementById("dl-pdf-btn").addEventListener("click", function(e){
+  ripple(this, e);
+  makePDF(false);
+});
+
+document.getElementById("dl-full-btn").addEventListener("click", function(e){
+  ripple(this, e);
+  makePDF(true);
+});
+
+document.getElementById("sum-pdf-btn").addEventListener("click", function(e){
+  ripple(this, e);
+  makePDF(true);
+});
+
+document.getElementById("close-sum-btn").addEventListener("click", function(e){
+  ripple(this, e);
+  document.getElementById("summary-overlay").classList.remove("show");
+});
+
+document.getElementById("summary-overlay").addEventListener("click", function(e){
+  if (e.target === this) this.classList.remove("show");
+});
+
+document.getElementById("sname").addEventListener("input", function(){
+  if (this.value.length > 1) {
+    document.getElementById("coach-tip").textContent =
+      `Welcome, ${this.value.split(" ")[0]}! ${TIPS[Math.floor(Math.random() * TIPS.length)]}`;
+  }
+});
+
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey && e.key === "Enter") {
+    const b = document.getElementById("check-btn");
+    if (!b.disabled) b.click();
+  }
+});
+
+// ─── INIT ────────────────────────────────────────────────────
+renderCards();
+updateHUD();
+
+// Idle animation
+setInterval(() => {
+  const p = document.querySelectorAll(".status-panel");
+  const i = Math.floor(Math.random() * p.length);
+  p[i].style.transform = "translateY(-5px)";
+  setTimeout(() => p[i].style.transform = "", 500);
+}, 4500);
+</script>
