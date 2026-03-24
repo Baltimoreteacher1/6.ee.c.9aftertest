@@ -2,1174 +2,2216 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Grade 6 Proportional Relationships Mission Game</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Grade 6 Proportional Relationships Quest Lab</title>
   <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f4f6fb;
-      color: #222;
+    :root{
+      --bg-1:#0f172a;
+      --bg-2:#111827;
+      --panel:#ffffff;
+      --panel-soft:#f8fafc;
+      --line:#dbe4f0;
+      --line-strong:#9fb4d1;
+      --text:#122033;
+      --muted:#5b6b80;
+      --brand:#2563eb;
+      --brand-2:#06b6d4;
+      --brand-3:#7c3aed;
+      --success:#166534;
+      --success-bg:#dcfce7;
+      --warn:#9a3412;
+      --warn-bg:#ffedd5;
+      --danger:#991b1b;
+      --danger-bg:#fee2e2;
+      --gold:#b45309;
+      --gold-bg:#fef3c7;
+      --shadow:0 16px 42px rgba(15,23,42,0.12);
+      --shadow-soft:0 10px 24px rgba(15,23,42,0.08);
+      --radius:18px;
+      --radius-sm:12px;
+      --font: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    header {
-      background: linear-gradient(135deg, #2d6cdf, #4bb3fd);
-      color: white;
-      padding: 16px 24px;
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:var(--font);
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(6,182,212,0.14), transparent 28%),
+        radial-gradient(circle at top right, rgba(124,58,237,0.14), transparent 28%),
+        linear-gradient(180deg, #eaf3ff 0%, #f8fbff 48%, #eef4ff 100%);
+      min-height:100vh;
     }
-    header h1 {
-      margin: 0;
-      font-size: 1.6rem;
+
+    .app-shell{
+      max-width:1380px;
+      margin:0 auto;
+      padding:20px 18px 120px;
     }
-    header p {
-      margin: 4px 0 0 0;
-      font-size: 0.95rem;
+
+    .hero{
+      background:
+        linear-gradient(135deg, rgba(37,99,235,0.96), rgba(6,182,212,0.95) 48%, rgba(124,58,237,0.95));
+      color:#fff;
+      border-radius:28px;
+      padding:22px 22px 20px;
+      box-shadow:0 20px 48px rgba(37,99,235,0.24);
+      position:relative;
+      overflow:hidden;
     }
-    main {
-      padding: 16px;
-      max-width: 1100px;
-      margin: 0 auto 80px auto;
+
+    .hero::before,
+    .hero::after{
+      content:"";
+      position:absolute;
+      border-radius:999px;
+      background:rgba(255,255,255,0.12);
+      pointer-events:none;
     }
-    .mission-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
+
+    .hero::before{
+      width:260px;height:260px;right:-60px;top:-80px;
     }
-    .mission-card {
-      border-radius: 8px;
-      background: white;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-      padding: 10px 12px;
-      cursor: pointer;
-      border: 2px solid transparent;
-      position: relative;
+
+    .hero::after{
+      width:180px;height:180px;left:-60px;bottom:-80px;
     }
-    .mission-card:hover {
-      border-color: #2d6cdf;
+
+    .hero-top{
+      display:flex;
+      gap:18px;
+      justify-content:space-between;
+      align-items:flex-start;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:1;
     }
-    .mission-card.active {
-      border-color: #1b4fb8;
-      box-shadow: 0 0 0 2px rgba(27, 79, 184, 0.15);
+
+    .hero h1{
+      margin:0;
+      font-size:clamp(1.8rem, 2.5vw, 2.55rem);
+      line-height:1.05;
+      letter-spacing:-0.02em;
     }
-    .mission-title {
-      font-weight: 600;
-      margin-bottom: 4px;
-      font-size: 0.98rem;
+
+    .hero p{
+      margin:10px 0 0;
+      max-width:780px;
+      color:rgba(255,255,255,0.95);
+      line-height:1.45;
+      font-size:1rem;
     }
-    .mission-meta {
-      font-size: 0.8rem;
-      color: #555;
+
+    .hero-badges{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:14px;
     }
-    .badge {
-      display: inline-block;
-      padding: 2px 6px;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      margin-right: 6px;
-      background: #e9f1ff;
-      color: #1b4fb8;
+
+    .hero-badge{
+      background:rgba(255,255,255,0.17);
+      border:1px solid rgba(255,255,255,0.22);
+      border-radius:999px;
+      padding:7px 12px;
+      font-size:.82rem;
+      font-weight:700;
+      backdrop-filter:blur(6px);
     }
-    .badge.dok1 { background: #e6f9f0; color: #0a7d47; }
-    .badge.dok2 { background: #fff4df; color: #b35a00; }
-    .badge.dok3 { background: #fde7ef; color: #b10b4e; }
-    .badge-std {
-      background: #222;
-      color: #fff;
+
+    .hero-controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
     }
-    .mission-points {
-      position: absolute;
-      right: 8px;
-      top: 8px;
-      font-size: 0.8rem;
-      background: #f0f3ff;
-      padding: 2px 6px;
-      border-radius: 4px;
+
+    .hero-chip{
+      background:rgba(255,255,255,0.15);
+      border:1px solid rgba(255,255,255,0.20);
+      color:#fff;
+      padding:10px 12px;
+      border-radius:16px;
+      min-width:140px;
     }
-    #mission-container {
-      margin-top: 12px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08);
-      padding: 16px 18px 22px 18px;
+
+    .hero-chip .label{
+      font-size:.74rem;
+      opacity:.88;
+      display:block;
+      margin-bottom:3px;
     }
-    #mission-title {
-      margin-top: 0;
-      margin-bottom: 6px;
-      font-size: 1.3rem;
+
+    .hero-chip .value{
+      font-size:1.02rem;
+      font-weight:800;
     }
-    #mission-desc {
-      margin-top: 0;
-      font-size: 0.95rem;
-      color: #333;
+
+    .layout{
+      display:grid;
+      grid-template-columns:340px minmax(0, 1fr);
+      gap:18px;
+      margin-top:18px;
     }
-    .prompt {
-      margin: 12px 0 6px 0;
-      font-weight: 500;
+
+    @media (max-width: 1120px){
+      .layout{grid-template-columns:1fr}
     }
-    input[type="number"],
+
+    .panel{
+      background:var(--panel);
+      border:1px solid rgba(159,180,209,0.45);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-soft);
+    }
+
+    .sidebar{
+      padding:16px;
+      position:sticky;
+      top:16px;
+      align-self:start;
+    }
+
+    @media (max-width:1120px){
+      .sidebar{position:static}
+    }
+
+    .section-title{
+      font-size:1rem;
+      font-weight:800;
+      margin:0 0 10px;
+      letter-spacing:-0.01em;
+    }
+
+    .field-wrap{
+      margin-bottom:12px;
+    }
+
+    label{
+      display:block;
+      font-size:.85rem;
+      font-weight:700;
+      margin-bottom:6px;
+      color:var(--text);
+    }
+
     input[type="text"],
+    input[type="number"],
     textarea,
-    select {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 6px 8px;
-      margin: 4px 0 10px 0;
-      font-size: 0.95rem;
-      border-radius: 4px;
-      border: 1px solid #ccd2e0;
+    select{
+      width:100%;
+      border:2px solid #d8e2ee;
+      border-radius:12px;
+      padding:11px 12px;
+      font-size:1rem;
+      color:var(--text);
+      background:#fff;
+      transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+      font-family:var(--font);
     }
-    textarea {
-      min-height: 80px;
-      resize: vertical;
+
+    input:focus, textarea:focus, select:focus{
+      outline:none;
+      border-color:#60a5fa;
+      box-shadow:0 0 0 4px rgba(96,165,250,0.18);
     }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin: 6px 0 10px 0;
-      font-size: 0.9rem;
+
+    textarea{
+      min-height:108px;
+      resize:vertical;
+      line-height:1.45;
     }
-    th, td {
-      border: 1px solid #d0d4e0;
-      padding: 4px 6px;
-      text-align: center;
+
+    .side-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin:12px 0 14px;
     }
-    th {
-      background: #f3f5fb;
+
+    .mini-stat{
+      padding:12px;
+      border-radius:16px;
+      background:linear-gradient(180deg, #f8fbff, #eef5ff);
+      border:1px solid #dbe7f8;
     }
-    .graph-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 2px;
-      margin: 6px 0 10px 0;
+
+    .mini-stat .small{
+      display:block;
+      font-size:.74rem;
+      color:var(--muted);
+      margin-bottom:5px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.04em;
     }
-    .graph-cell {
-      border: 1px solid #d0d4e0;
-      padding-top: 100%;
-      position: relative;
-      cursor: pointer;
-      background: #fafbff;
+
+    .mini-stat .big{
+      font-size:1.18rem;
+      font-weight:900;
+      color:var(--text);
     }
-    .graph-cell span {
-      position: absolute;
-      font-size: 0.65rem;
-      right: 2px;
-      bottom: 2px;
-      color: #999;
+
+    .meter{
+      margin-top:12px;
+      background:#e7eef7;
+      height:14px;
+      border-radius:999px;
+      overflow:hidden;
+      border:1px solid #d2ddeb;
     }
-    .graph-cell.active {
-      background: #2d6cdf;
-      box-shadow: inset 0 0 0 2px white;
+
+    .meter-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg, var(--brand), var(--brand-2), var(--brand-3));
+      transition:width .35s ease;
     }
-    .graph-axes-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.75rem;
-      color: #555;
-      margin-bottom: 4px;
+
+    .helper-box{
+      background:linear-gradient(180deg, #fffdf4, #fff7d9);
+      border:1px solid #f5d46c;
+      border-radius:16px;
+      padding:14px;
+      margin-top:14px;
     }
-    .btn-row {
-      margin-top: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+
+    .helper-box h3{
+      margin:0 0 8px;
+      font-size:.95rem;
     }
-    button {
-      border-radius: 999px;
-      border: none;
-      padding: 7px 14px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      background: #2d6cdf;
-      color: white;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+
+    .helper-box p{
+      margin:0;
+      font-size:.92rem;
+      line-height:1.45;
+      color:#5b4a17;
     }
-    button.secondary {
-      background: #e1e5f2;
-      color: #222;
+
+    .mission-board{
+      padding:16px;
     }
-    button:disabled {
-      background: #ccd2e0;
-      cursor: default;
+
+    .toolbar{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:14px;
     }
-    .feedback {
-      margin-top: 8px;
-      font-size: 0.9rem;
-      padding: 8px 10px;
-      border-radius: 6px;
-      display: none;
+
+    .pill-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
     }
-    .feedback.ok {
-      display: block;
-      background: #e6f9f0;
-      color: #0a7d47;
-      border: 1px solid #0a7d47;
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:.84rem;
+      font-weight:800;
+      background:#eff6ff;
+      color:#1d4ed8;
+      border:1px solid #cfe0ff;
     }
-    .feedback.partial {
-      display: block;
-      background: #fff4df;
-      color: #8a4b00;
-      border: 1px solid #b35a00;
+
+    .pill.dark{
+      background:#effafc;
+      color:#0f766e;
+      border-color:#c9f0ef;
     }
-    .feedback.try {
-      display: block;
-      background: #fde7ef;
-      color: #b10b4e;
-      border: 1px solid #b10b4e;
+
+    .mission-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+      gap:12px;
+      margin-bottom:16px;
     }
-    .status-bar {
-      font-size: 0.85rem;
-      margin-top: 10px;
-      color: #444;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 6px;
+
+    .mission-card{
+      border-radius:20px;
+      padding:14px;
+      position:relative;
+      cursor:pointer;
+      border:2px solid #dbe6f3;
+      background:
+        linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+      transition:transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+      box-shadow:0 8px 20px rgba(15,23,42,0.06);
+      overflow:hidden;
     }
-    #log-container {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: #111827;
-      color: #e5e7eb;
-      max-height: 40vh;
-      overflow-y: auto;
-      padding: 8px 14px 10px 14px;
-      font-size: 0.78rem;
-      border-top: 2px solid #1f2937;
+
+    .mission-card:hover{
+      transform:translateY(-3px);
+      border-color:#7db1ff;
+      box-shadow:0 14px 28px rgba(37,99,235,0.12);
     }
-    #log-container h2 {
-      margin: 2px 0 4px 0;
-      font-size: 0.9rem;
+
+    .mission-card.active{
+      border-color:#2563eb;
+      box-shadow:0 0 0 5px rgba(37,99,235,0.12), 0 18px 34px rgba(37,99,235,0.14);
+      transform:translateY(-2px);
     }
-    .log-entry {
-      border-top: 1px solid #374151;
-      padding: 4px 0;
-      white-space: pre-wrap;
+
+    .mission-card.done{
+      background:linear-gradient(180deg, #f2fff7 0%, #ffffff 100%);
+      border-color:#5bc285;
     }
-    .log-entry span.mission-tag {
-      font-weight: 600;
-      color: #93c5fd;
+
+    .card-top{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
     }
-    .log-entry span.time-tag {
-      color: #9ca3af;
-      margin-right: 6px;
+
+    .emoji{
+      width:44px;height:44px;border-radius:14px;
+      display:grid;place-items:center;
+      font-size:1.35rem;
+      background:linear-gradient(135deg, #e8f2ff, #f6faff);
+      border:1px solid #d6e4ff;
+      flex-shrink:0;
     }
-    .collapse-toggle {
-      cursor: pointer;
-      font-size: 0.75rem;
-      color: #9ca3af;
-      text-decoration: underline;
+
+    .mission-name{
+      margin:0;
+      font-size:1rem;
+      font-weight:900;
+      line-height:1.15;
+      letter-spacing:-0.01em;
     }
-    .hidden {
-      display: none;
+
+    .mission-brief{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:.89rem;
+      line-height:1.35;
     }
-    @media print {
-      header, .mission-list, .btn-row, .status-bar {
-        display: none;
-      }
-      main {
-        margin-bottom: 0;
-      }
-      #log-container {
-        position: static;
-        max-height: none;
-        background: white;
-        color: black;
-        border: none;
-        font-size: 0.8rem;
-      }
-      #log-container h2 {
-        font-size: 1rem;
-      }
-      body {
-        background: white;
-      }
+
+    .tag-row{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+    }
+
+    .tag{
+      border-radius:999px;
+      padding:5px 9px;
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.02em;
+      border:1px solid #dae4f1;
+      color:#36506e;
+      background:#f8fbff;
+    }
+
+    .tag.dok1{background:#ecfdf5;color:#166534;border-color:#b7ebc5}
+    .tag.dok2{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+    .tag.dok3{background:#fdf2f8;color:#9d174d;border-color:#fbcfe8}
+    .tag.points{background:#fef3c7;color:#92400e;border-color:#f8da86}
+
+    .active-mission{
+      margin-top:12px;
+      padding:18px;
+      border-radius:22px;
+      border:1px solid #dce6f3;
+      background:linear-gradient(180deg, #ffffff, #fbfdff);
+      box-shadow:0 14px 32px rgba(15,23,42,0.06);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .active-mission::before{
+      content:"";
+      position:absolute;
+      inset:0 auto 0 0;
+      width:8px;
+      background:linear-gradient(180deg, var(--brand), var(--brand-2), var(--brand-3));
+    }
+
+    .mission-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+
+    .mission-head h2{
+      margin:0;
+      font-size:1.45rem;
+      letter-spacing:-0.02em;
+    }
+
+    .mission-head p{
+      margin:8px 0 0;
+      font-size:1rem;
+      color:#344255;
+      line-height:1.45;
+      max-width:840px;
+    }
+
+    .mission-status{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .status-chip{
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:.8rem;
+      font-weight:900;
+      border:1px solid #d8e4f5;
+      background:#f8fbff;
+      color:#23415f;
+    }
+
+    .story-box{
+      margin-top:12px;
+      margin-bottom:16px;
+      border-radius:16px;
+      background:linear-gradient(180deg, #f8fcff, #eef8ff);
+      border:1px solid #d7e9ff;
+      padding:14px;
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+
+    .story-icon{
+      width:42px;height:42px;border-radius:14px;
+      display:grid;place-items:center;
+      font-size:1.25rem;
+      background:#fff;
+      border:1px solid #d9e6f5;
+      flex-shrink:0;
+    }
+
+    .story-box h3{
+      margin:0 0 5px;
+      font-size:1rem;
+    }
+
+    .story-box p{
+      margin:0;
+      color:#3d4d62;
+      line-height:1.45;
+      font-size:.95rem;
+    }
+
+    .task-list{
+      display:grid;
+      gap:14px;
+    }
+
+    .task-card{
+      background:#fff;
+      border:1px solid #dce7f3;
+      border-radius:18px;
+      padding:14px;
+    }
+
+    .task-title{
+      margin:0 0 8px;
+      font-size:1rem;
+      font-weight:900;
+      color:#0f172a;
+    }
+
+    .task-kicker{
+      display:inline-block;
+      font-size:.76rem;
+      font-weight:900;
+      color:#7c2d12;
+      background:#fff7ed;
+      border:1px solid #fed7aa;
+      border-radius:999px;
+      padding:4px 8px;
+      margin-bottom:8px;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+
+    .hint-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    .hint-btn, .ghost-btn, .primary-btn, .secondary-btn{
+      border:none;
+      border-radius:999px;
+      padding:10px 14px;
+      font-size:.92rem;
+      font-weight:800;
+      cursor:pointer;
+      transition:transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+      font-family:var(--font);
+    }
+
+    .hint-btn:hover, .ghost-btn:hover, .primary-btn:hover, .secondary-btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .hint-btn{
+      background:#f8fafc;
+      color:#334155;
+      border:1px solid #dbe7f2;
+    }
+
+    .ghost-btn{
+      background:#eef6ff;
+      color:#1d4ed8;
+      border:1px solid #cfe0ff;
+    }
+
+    .primary-btn{
+      background:linear-gradient(135deg, #2563eb, #0ea5e9);
+      color:#fff;
+      box-shadow:0 10px 20px rgba(37,99,235,0.22);
+    }
+
+    .secondary-btn{
+      background:#eff3f8;
+      color:#1f2937;
+      border:1px solid #d6dfe9;
+    }
+
+    .btn-bar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin:8px 0 4px;
+      overflow:hidden;
+      border-radius:16px;
+      border:2px solid #d7e3f0;
+    }
+
+    th,td{
+      border:1px solid #d7e3f0;
+      padding:10px 8px;
+      text-align:center;
+      font-size:.96rem;
+    }
+
+    th{
+      background:#f6faff;
+      color:#244260;
+      font-weight:900;
+    }
+
+    .graph-wrap{
+      margin-top:8px;
+      background:#fbfdff;
+      border:1px solid #dbe8f5;
+      border-radius:18px;
+      padding:14px;
+    }
+
+    .graph-head{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:10px;
+    }
+
+    .graph-grid{
+      display:grid;
+      gap:4px;
+      width:min(100%, 580px);
+    }
+
+    .graph-cell{
+      position:relative;
+      aspect-ratio:1/1;
+      border:2px solid #d9e6f3;
+      border-radius:12px;
+      background:linear-gradient(180deg, #ffffff, #f7fbff);
+      cursor:pointer;
+      transition:transform .1s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .graph-cell:hover{
+      transform:scale(1.02);
+      border-color:#7ab2ff;
+    }
+
+    .graph-cell.active{
+      background:linear-gradient(180deg, #2563eb, #0ea5e9);
+      border-color:#1d4ed8;
+      box-shadow:inset 0 0 0 2px rgba(255,255,255,0.7);
+    }
+
+    .graph-cell.correct{
+      background:linear-gradient(180deg, #22c55e, #16a34a);
+      border-color:#15803d;
+    }
+
+    .graph-cell.incorrect{
+      background:linear-gradient(180deg, #ef4444, #dc2626);
+      border-color:#b91c1c;
+    }
+
+    .graph-cell span{
+      position:absolute;
+      right:5px;
+      bottom:4px;
+      font-size:.68rem;
+      color:#607288;
+      font-weight:800;
+    }
+
+    .graph-cell.active span,
+    .graph-cell.correct span,
+    .graph-cell.incorrect span{
+      color:rgba(255,255,255,0.94);
+    }
+
+    .feedback{
+      margin-top:14px;
+      border-radius:18px;
+      padding:14px;
+      display:none;
+      border:2px solid transparent;
+    }
+
+    .feedback.show{display:block}
+    .feedback.ok{
+      background:var(--success-bg);
+      border-color:#86efac;
+      color:var(--success);
+    }
+    .feedback.partial{
+      background:var(--warn-bg);
+      border-color:#fdba74;
+      color:var(--warn);
+    }
+    .feedback.try{
+      background:var(--danger-bg);
+      border-color:#fca5a5;
+      color:var(--danger);
+    }
+
+    .feedback h3{
+      margin:0 0 8px;
+      font-size:1rem;
+    }
+
+    .feedback ul{
+      margin:0;
+      padding-left:18px;
+      line-height:1.5;
+    }
+
+    .celebrate{
+      animation:popPulse .45s ease;
+    }
+
+    @keyframes popPulse{
+      0%{transform:scale(0.96)}
+      50%{transform:scale(1.02)}
+      100%{transform:scale(1)}
+    }
+
+    .xp-burst{
+      position:fixed;
+      font-weight:900;
+      color:#0f766e;
+      pointer-events:none;
+      z-index:9999;
+      animation:riseFade .95s ease forwards;
+      text-shadow:0 2px 6px rgba(255,255,255,0.8);
+    }
+
+    @keyframes riseFade{
+      0%{opacity:0;transform:translateY(18px) scale(.9)}
+      15%{opacity:1}
+      100%{opacity:0;transform:translateY(-42px) scale(1.08)}
+    }
+
+    .spark{
+      position:fixed;
+      width:10px;height:10px;
+      border-radius:999px;
+      pointer-events:none;
+      z-index:9998;
+      opacity:0;
+      animation:sparkFly .85s ease forwards;
+    }
+
+    @keyframes sparkFly{
+      0%{opacity:1;transform:translate(0,0) scale(1)}
+      100%{opacity:0;transform:translate(var(--dx), var(--dy)) scale(.2)}
+    }
+
+    .teacher-log{
+      margin-top:18px;
+      padding:16px;
+    }
+
+    .teacher-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+
+    .log-list{
+      display:grid;
+      gap:10px;
+      max-height:360px;
+      overflow:auto;
+      padding-right:4px;
+    }
+
+    .log-item{
+      border:1px solid #dbe5f0;
+      border-radius:16px;
+      padding:12px;
+      background:#fbfdff;
+    }
+
+    .log-item .meta{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:7px;
+      font-size:.83rem;
+      color:#526377;
+      font-weight:800;
+    }
+
+    .log-item pre{
+      margin:8px 0 0;
+      white-space:pre-wrap;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background:#f6faff;
+      border:1px solid #dbe7f2;
+      padding:10px;
+      border-radius:12px;
+      font-size:.8rem;
+      color:#334155;
+    }
+
+    .footer-note{
+      margin-top:14px;
+      color:#5d6e83;
+      font-size:.88rem;
+      line-height:1.45;
+    }
+
+    .hidden{display:none !important}
+
+    .tiny{
+      font-size:.8rem;
+      color:var(--muted);
+    }
+
+    .eq-bank{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:8px;
+    }
+
+    .eq-chip{
+      background:#f8fbff;
+      color:#1e3a5f;
+      border:1px solid #d8e6f5;
+      border-radius:999px;
+      padding:8px 11px;
+      font-weight:800;
+      cursor:pointer;
+      user-select:none;
+    }
+
+    .eq-chip:hover{
+      background:#ecf5ff;
+      border-color:#b8d5ff;
+    }
+
+    .starter-box{
+      margin-top:10px;
+      border-radius:14px;
+      background:#f8fafc;
+      border:1px dashed #c8d6e5;
+      padding:12px;
+    }
+
+    .starter-box strong{
+      display:block;
+      margin-bottom:6px;
+    }
+
+    .micro-note{
+      font-size:.88rem;
+      color:#42546a;
+      margin-top:7px;
+      line-height:1.45;
+    }
+
+    @media print{
+      body{background:#fff}
+      .hero,.sidebar .helper-box,.toolbar .pill-row:last-child,.btn-bar,.teacher-top button{display:none}
+      .layout{grid-template-columns:1fr}
+      .panel{box-shadow:none}
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Proportional Relationship Missions (Grade 6)</h1>
-    <p>CCSS.Math.Content.6.EE.C.9 • Work log is saved automatically for teacher review.</p>
-  </header>
-
-  <main>
-    <section>
-      <p><strong>Student:</strong> <input type="text" id="student-name" placeholder="Type your name here" style="max-width: 260px;"></p>
-      <p style="font-size:0.9rem;color:#444;margin-top:4px;">
-        Choose a mission card below. Complete the tasks, then click “Record Work for Teacher”.
-      </p>
-    </section>
-
-    <!-- Mission selection cards (11 missions matching the 11 items) -->
-    <section class="mission-list" id="mission-list">
-      <!-- Filled by JS -->
-    </section>
-
-    <!-- Active mission container -->
-    <section id="mission-container">
-      <h2 id="mission-title">Select a mission to begin</h2>
-      <p id="mission-desc" style="color:#555;">Your tasks, input boxes, and graphing area will appear here.</p>
-      <div id="mission-content"></div>
-      <div class="btn-row">
-        <button id="check-btn" disabled>Check Understanding</button>
-        <button id="record-btn" class="secondary" disabled>Record Work for Teacher</button>
-        <button id="clear-btn" class="secondary" disabled>Clear My Answers</button>
+  <div class="app-shell">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <h1>Proportional Relationships Quest Lab</h1>
+          <p>
+            Complete missions, build your streak, unlock mastery badges, and leave a clean teacher review trail.
+            This upgraded version keeps the core math work from your original game while making it more interactive,
+            more game-like, more polished, and more student-friendly.
+          </p>
+          <div class="hero-badges">
+            <span class="hero-badge">CCSS 6.EE.C.9</span>
+            <span class="hero-badge">Mission-Based</span>
+            <span class="hero-badge">Teacher Log Included</span>
+            <span class="hero-badge">Single HTML File</span>
+          </div>
+        </div>
+        <div class="hero-controls">
+          <div class="hero-chip">
+            <span class="label">Player Level</span>
+            <span class="value" id="hero-level">Rookie</span>
+          </div>
+          <div class="hero-chip">
+            <span class="label">XP</span>
+            <span class="value" id="hero-xp">0</span>
+          </div>
+          <div class="hero-chip">
+            <span class="label">Streak</span>
+            <span class="value" id="hero-streak">0</span>
+          </div>
+        </div>
       </div>
-      <div id="feedback" class="feedback"></div>
-      <div class="status-bar">
-        <span id="status-mission">Mission: none selected</span>
-        <span id="status-points">Possible points: 0 • Estimated DOK: –</span>
-      </div>
     </section>
-  </main>
 
-  <!-- Teacher log -->
-  <section id="log-container">
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-      <h2>Teacher Review Log</h2>
-      <span class="collapse-toggle" onclick="toggleLog()">Collapse / Expand</span>
+    <div class="layout">
+      <aside class="panel sidebar">
+        <h2 class="section-title">Player Setup</h2>
+
+        <div class="field-wrap">
+          <label for="student-name">Student Name</label>
+          <input type="text" id="student-name" placeholder="Type your name here" />
+        </div>
+
+        <div class="field-wrap">
+          <label for="mode-select">Game Mode</label>
+          <select id="mode-select">
+            <option value="adventure">Adventure Mode</option>
+            <option value="focus">Focus Mode</option>
+            <option value="challenge">Challenge Mode</option>
+          </select>
+        </div>
+
+        <div class="field-wrap">
+          <label for="sound-toggle">Sound Effects</label>
+          <select id="sound-toggle">
+            <option value="on">On</option>
+            <option value="off">Off</option>
+          </select>
+        </div>
+
+        <div class="side-grid">
+          <div class="mini-stat">
+            <span class="small">Completed</span>
+            <span class="big" id="completed-count">0 / 11</span>
+          </div>
+          <div class="mini-stat">
+            <span class="small">Accuracy</span>
+            <span class="big" id="accuracy-rate">0%</span>
+          </div>
+          <div class="mini-stat">
+            <span class="small">Badges</span>
+            <span class="big" id="badge-count">0</span>
+          </div>
+          <div class="mini-stat">
+            <span class="small">Best Streak</span>
+            <span class="big" id="best-streak">0</span>
+          </div>
+        </div>
+
+        <label>Quest Progress</label>
+        <div class="meter" aria-hidden="true">
+          <div class="meter-fill" id="meter-fill"></div>
+        </div>
+        <div class="tiny" style="margin-top:8px;">
+          Finish missions to fill your progress bar and level up.
+        </div>
+
+        <div class="helper-box">
+          <h3>Math Coach Tip</h3>
+          <p id="coach-tip">
+            Start by deciding what changes first. In a proportional relationship, one variable depends on the other.
+          </p>
+        </div>
+
+        <div class="helper-box" style="background:linear-gradient(180deg,#f5fbff,#edf7ff); border-color:#bde3ff;">
+          <h3>Badges Earned</h3>
+          <p id="badge-list">No badges yet. Finish a mission with a strong score to start earning them.</p>
+        </div>
+      </aside>
+
+      <main class="panel mission-board">
+        <div class="toolbar">
+          <div class="pill-row">
+            <span class="pill">Mission Hub</span>
+            <span class="pill dark" id="mission-summary">Choose a mission to begin.</span>
+          </div>
+          <div class="pill-row">
+            <button class="ghost-btn" id="shuffle-btn" type="button">Shuffle Mission Order</button>
+            <button class="ghost-btn" id="coach-btn" type="button">New Coach Tip</button>
+            <button class="ghost-btn" id="export-log-btn" type="button">Copy Teacher Log</button>
+          </div>
+        </div>
+
+        <section class="mission-grid" id="mission-grid"></section>
+
+        <section class="active-mission celebrate" id="active-mission">
+          <div class="mission-head">
+            <div>
+              <h2 id="mission-title">Select a mission to begin</h2>
+              <p id="mission-description">
+                Your mission story, tasks, tables, graph area, and answer boxes will appear here.
+              </p>
+            </div>
+            <div class="mission-status">
+              <span class="status-chip" id="mission-status-chip">Mission: none</span>
+              <span class="status-chip" id="mission-dok-chip">DOK: —</span>
+              <span class="status-chip" id="mission-points-chip">Possible Points: 0</span>
+            </div>
+          </div>
+
+          <div class="story-box">
+            <div class="story-icon">🧭</div>
+            <div>
+              <h3>Mission Briefing</h3>
+              <p id="mission-briefing">
+                Each mission has a short challenge story, answer spaces, and feedback that helps you revise and improve.
+              </p>
+            </div>
+          </div>
+
+          <div id="mission-content" class="task-list"></div>
+
+          <div class="btn-bar">
+            <button class="primary-btn" id="check-btn" type="button" disabled>Check Mission</button>
+            <button class="secondary-btn" id="record-btn" type="button" disabled>Record for Teacher</button>
+            <button class="secondary-btn" id="retry-btn" type="button" disabled>Retry Mission</button>
+            <button class="secondary-btn" id="next-btn" type="button" disabled>Next Mission</button>
+          </div>
+
+          <div class="feedback" id="feedback-box" aria-live="polite"></div>
+        </section>
+
+        <section class="panel teacher-log">
+          <div class="teacher-top">
+            <div>
+              <h2 class="section-title" style="margin-bottom:4px;">Teacher Review Log</h2>
+              <div class="tiny">Work is preserved in-session and can be copied for documentation.</div>
+            </div>
+            <div class="pill-row">
+              <button class="ghost-btn" id="toggle-log-btn" type="button">Collapse / Expand</button>
+              <button class="ghost-btn" id="clear-log-btn" type="button">Clear Log</button>
+            </div>
+          </div>
+          <div class="log-list" id="log-list"></div>
+          <div class="footer-note">
+            Designed for classroom use: polished visuals, clear feedback, teacher-visible logging, gamified progression,
+            and stronger student engagement without external libraries.
+          </div>
+        </section>
+      </main>
     </div>
-    <div id="log-entries"></div>
-  </section>
+  </div>
 
   <script>
-    /***********************
-     * Mission definitions *
-     ***********************/
+    const coachTips = [
+      "Find the unit rate first. That often tells you the equation.",
+      "Ask: which quantity changes first? That is often the independent variable.",
+      "In a proportional relationship, the graph goes through (0, 0).",
+      "If the rule is constant, look for a multiply pattern, not a random change.",
+      "Use a table row you trust to test an equation choice.",
+      "When comparing two people or situations, extend both patterns before comparing.",
+      "For y = kx, the value of k is the amount of y for 1 unit of x."
+    ];
+
+    const levelNames = [
+      { xp: 0, name: "Rookie" },
+      { xp: 60, name: "Problem Solver" },
+      { xp: 130, name: "Pattern Tracker" },
+      { xp: 220, name: "Rate Master" },
+      { xp: 330, name: "Equation Explorer" },
+      { xp: 470, name: "Quest Champion" }
+    ];
+
+    const badgeCatalog = {
+      firstPerfect: "🎯 Precision Start",
+      streak3: "🔥 Three in a Row",
+      graphHero: "📈 Graph Hero",
+      writer: "✍️ Explanation Expert",
+      finisher: "🏁 Mission Finisher",
+      allComplete: "👑 Quest Conqueror"
+    };
+
+    const gameState = {
+      currentMissionId: null,
+      xp: 0,
+      streak: 0,
+      bestStreak: 0,
+      completed: new Set(),
+      badges: new Set(),
+      totalChecks: 0,
+      totalEarned: 0,
+      totalPossible: 0,
+      logCollapsed: false
+    };
+
+    const missionGrid = document.getElementById("mission-grid");
+    const missionTitle = document.getElementById("mission-title");
+    const missionDescription = document.getElementById("mission-description");
+    const missionBriefing = document.getElementById("mission-briefing");
+    const missionContent = document.getElementById("mission-content");
+    const missionSummary = document.getElementById("mission-summary");
+    const missionStatusChip = document.getElementById("mission-status-chip");
+    const missionDokChip = document.getElementById("mission-dok-chip");
+    const missionPointsChip = document.getElementById("mission-points-chip");
+    const feedbackBox = document.getElementById("feedback-box");
+    const logList = document.getElementById("log-list");
+
+    const checkBtn = document.getElementById("check-btn");
+    const recordBtn = document.getElementById("record-btn");
+    const retryBtn = document.getElementById("retry-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const shuffleBtn = document.getElementById("shuffle-btn");
+    const coachBtn = document.getElementById("coach-btn");
+    const exportLogBtn = document.getElementById("export-log-btn");
+    const toggleLogBtn = document.getElementById("toggle-log-btn");
+    const clearLogBtn = document.getElementById("clear-log-btn");
+
+    const heroLevel = document.getElementById("hero-level");
+    const heroXp = document.getElementById("hero-xp");
+    const heroStreak = document.getElementById("hero-streak");
+    const completedCount = document.getElementById("completed-count");
+    const accuracyRate = document.getElementById("accuracy-rate");
+    const badgeCount = document.getElementById("badge-count");
+    const badgeList = document.getElementById("badge-list");
+    const bestStreakEl = document.getElementById("best-streak");
+    const meterFill = document.getElementById("meter-fill");
+    const coachTipEl = document.getElementById("coach-tip");
+
+    function normalizeEquation(text){
+      return (text || "")
+        .toLowerCase()
+        .replace(/\s+/g, "")
+        .replace(/×/g, "*")
+        .replace(/·/g, "*");
+    }
+
+    function approxEqual(a, b, eps = 0.01){
+      return !isNaN(a) && Math.abs(a - b) < eps;
+    }
+
+    function currentLevelName(){
+      let level = levelNames[0].name;
+      for(const item of levelNames){
+        if(gameState.xp >= item.xp) level = item.name;
+      }
+      return level;
+    }
+
+    function updateCoachTip(){
+      const idx = Math.floor(Math.random() * coachTips.length);
+      coachTipEl.textContent = coachTips[idx];
+    }
+
+    function showBurst(text, x, y, color = "#0f766e"){
+      const burst = document.createElement("div");
+      burst.className = "xp-burst";
+      burst.textContent = text;
+      burst.style.left = x + "px";
+      burst.style.top = y + "px";
+      burst.style.color = color;
+      document.body.appendChild(burst);
+      setTimeout(() => burst.remove(), 1000);
+    }
+
+    function makeSparks(x, y){
+      const colors = ["#2563eb","#06b6d4","#7c3aed","#22c55e","#f59e0b"];
+      for(let i = 0; i < 14; i++){
+        const s = document.createElement("div");
+        s.className = "spark";
+        s.style.left = x + "px";
+        s.style.top = y + "px";
+        s.style.background = colors[i % colors.length];
+        s.style.setProperty("--dx", `${(Math.random() - 0.5) * 180}px`);
+        s.style.setProperty("--dy", `${(Math.random() - 0.5) * 180}px`);
+        document.body.appendChild(s);
+        setTimeout(() => s.remove(), 900);
+      }
+    }
+
+    function playTone(type = "ok"){
+      if(document.getElementById("sound-toggle").value !== "on") return;
+      try{
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type === "ok" ? "triangle" : type === "partial" ? "square" : "sawtooth";
+        osc.frequency.value = type === "ok" ? 620 : type === "partial" ? 420 : 240;
+        gain.gain.value = 0.04;
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.frequency.exponentialRampToValueAtTime(
+          type === "ok" ? 820 : type === "partial" ? 360 : 180,
+          ctx.currentTime + 0.16
+        );
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.18);
+        osc.stop(ctx.currentTime + 0.2);
+      }catch(err){}
+    }
+
+    function awardBadge(key){
+      if(gameState.badges.has(key)) return;
+      gameState.badges.add(key);
+      badgeList.textContent = [...gameState.badges].map(k => badgeCatalog[k]).join(" • ");
+      badgeCount.textContent = gameState.badges.size;
+      const x = window.innerWidth * 0.5;
+      const y = 120;
+      showBurst(`Badge Unlocked: ${badgeCatalog[key]}`, x, y, "#7c3aed");
+      makeSparks(x, y);
+    }
+
+    function awardXp(amount, anchor = null){
+      gameState.xp += amount;
+      heroXp.textContent = gameState.xp;
+      heroLevel.textContent = currentLevelName();
+      const rect = anchor ? anchor.getBoundingClientRect() : { left: window.innerWidth / 2, top: 90 };
+      showBurst(`+${amount} XP`, rect.left + rect.width / 2, rect.top + 10, "#0f766e");
+    }
+
+    function updateDashboard(){
+      completedCount.textContent = `${gameState.completed.size} / ${missions.length}`;
+      heroStreak.textContent = gameState.streak;
+      bestStreakEl.textContent = gameState.bestStreak;
+      heroXp.textContent = gameState.xp;
+      heroLevel.textContent = currentLevelName();
+      badgeCount.textContent = gameState.badges.size;
+      accuracyRate.textContent = gameState.totalPossible
+        ? `${Math.round((gameState.totalEarned / gameState.totalPossible) * 100)}%`
+        : "0%";
+      meterFill.style.width = `${(gameState.completed.size / missions.length) * 100}%`;
+      badgeList.textContent = gameState.badges.size
+        ? [...gameState.badges].map(k => badgeCatalog[k]).join(" • ")
+        : "No badges yet. Finish a mission with a strong score to start earning them.";
+      missionSummary.textContent = gameState.currentMissionId
+        ? `Current Mission: ${gameState.currentMissionId}`
+        : "Choose a mission to begin.";
+
+      if(gameState.completed.size >= missions.length){
+        awardBadge("allComplete");
+      }
+    }
+
+    function buildTaskCard(title, inner, kicker = "Task"){
+      return `
+        <div class="task-card">
+          <div class="task-kicker">${kicker}</div>
+          <h3 class="task-title">${title}</h3>
+          ${inner}
+        </div>
+      `;
+    }
+
+    function graphTemplate(id, xLabel, yLabel, xs, ys){
+      return `
+        <div class="graph-wrap">
+          <div class="graph-head">
+            <strong>Interactive Graph Grid</strong>
+            <span class="tiny">Tap cells to place points.</span>
+          </div>
+          <div class="tiny" style="margin-bottom:8px;">x-axis: ${xLabel} • y-axis: ${yLabel}</div>
+          <div class="graph-grid" id="${id}" style="grid-template-columns: repeat(${xs.length}, minmax(54px, 1fr));"></div>
+        </div>
+      `;
+    }
+
+    function populateGraph(id, xs, ys){
+      const grid = document.getElementById(id);
+      if(!grid) return;
+      grid.innerHTML = "";
+      [...ys].reverse().forEach(y => {
+        xs.forEach(x => {
+          const cell = document.createElement("button");
+          cell.type = "button";
+          cell.className = "graph-cell";
+          cell.dataset.x = x;
+          cell.dataset.y = y;
+          const label = document.createElement("span");
+          label.textContent = `(${x},${y})`;
+          cell.appendChild(label);
+          cell.addEventListener("click", () => {
+            cell.classList.toggle("active");
+            cell.classList.remove("correct", "incorrect");
+          });
+          grid.appendChild(cell);
+        });
+      });
+    }
+
+    function markGraph(gridSelector, correctPoints){
+      const cells = document.querySelectorAll(`${gridSelector} .graph-cell`);
+      cells.forEach(cell => {
+        const x = Number(cell.dataset.x);
+        const y = Number(cell.dataset.y);
+        const isSelected = cell.classList.contains("active");
+        const isCorrect = correctPoints.some(pt => pt.x === x && pt.y === y);
+        cell.classList.remove("correct", "incorrect");
+        if(isSelected && isCorrect){
+          cell.classList.add("correct");
+        }else if(isSelected && !isCorrect){
+          cell.classList.add("incorrect");
+        }
+      });
+    }
+
     const missions = [
-      // Q1: Independent vs dependent variable, unit rate context
       {
-        id: "M1",
-        title: "Rapid Tester",
-        dok: 1,
-        points: 1.0,
-        standard: "6.EE.C.9",
-        brief: "Identify independent vs. dependent variables.",
-        description:
-          "A student answers 3 questions each minute while taking a test. Let m stand for the number of minutes and q stand for the number of questions. Which variable is the independent variable if you want to find the number of questions answered?",
-        buildContent: function (container) {
-          container.innerHTML = `
-            <p class="prompt">1. In this situation, which variable is independent?</p>
-            <p style="font-size:0.9rem;">Type either <strong>m</strong> for minutes or <strong>q</strong> for questions.</p>
-            <input type="text" id="m1-independent" placeholder="m or q" />
-            <p class="prompt">2. Explain your reasoning in one sentence.</p>
-            <textarea id="m1-explain" placeholder="Explain why that variable is independent."></textarea>
-          `;
+        id:"M1",
+        emoji:"⏱️",
+        title:"Rapid Tester",
+        dok:1,
+        points:1,
+        brief:"Identify the independent variable in a real-life context.",
+        story:"You are helping a testing company build a smart timer. You need to decide which quantity controls the other.",
+        description:"A student answers 3 questions each minute while taking a test. Let m stand for the number of minutes and q stand for the number of questions. Which variable is the independent variable if you want to find the number of questions answered?",
+        build(container){
+          container.innerHTML = [
+            buildTaskCard(
+              "Choose the Independent Variable",
+              `
+              <p>Type <strong>m</strong> for minutes or <strong>q</strong> for questions.</p>
+              <input type="text" id="m1-independent" placeholder="m or q" />
+              <div class="starter-box">
+                <strong>Sentence Starter</strong>
+                The independent variable is ____ because it changes first and the other variable depends on it.
+              </div>
+              `,
+              "Core"
+            ),
+            buildTaskCard(
+              "Explain Your Thinking",
+              `
+              <textarea id="m1-explain" placeholder="Explain why that variable is independent."></textarea>
+              <div class="hint-row">
+                <button class="hint-btn" type="button" data-fill="m1-explain" data-text="The independent variable is minutes because the number of questions depends on how much time has passed.">Use a model explanation</button>
+              </div>
+              `,
+              "Explain"
+            )
+          ].join("");
+          wireFillButtons();
         },
-        check: function () {
+        check(){
           const independent = (document.getElementById("m1-independent").value || "").trim().toLowerCase();
           const explanation = (document.getElementById("m1-explain").value || "").trim();
           let score = 0;
-          let total = 2;
-          let messages = [];
-          if (independent === "m") {
-            score += 1;
-            messages.push("You correctly identified m (minutes) as the independent variable.");
-          } else if (independent === "") {
-            messages.push("You did not enter a variable.");
-          } else {
-            messages.push("The independent variable is m (minutes), because the number of questions depends on how many minutes have passed.");
+          const total = 2;
+          const messages = [];
+          if(independent === "m"){
+            score++;
+            messages.push("You correctly identified <strong>m</strong> (minutes) as the independent variable.");
+          }else{
+            messages.push("The independent variable is <strong>m</strong> because the number of questions depends on the number of minutes.");
           }
-          if (explanation.length >= 10) {
-            score += 1;
-            messages.push("You provided an explanation with enough detail.");
-          } else {
-            messages.push("Add more detail to your explanation (how does time affect questions answered?).");
+          if(explanation.length >= 14){
+            score++;
+            messages.push("Your explanation includes enough detail to show your reasoning.");
+          }else{
+            messages.push("Add a fuller explanation that says which quantity changes first and which quantity depends on it.");
           }
           return { score, total, messages };
         }
       },
-
-      // Q2: Table with missing proportional value
       {
-        id: "M2",
-        title: "Storage Center",
-        dok: 2,
-        points: 1.0,
-        standard: "6.EE.C.9",
-        brief: "Use a table to find a proportional output.",
-        description:
-          "A storage center charges $82.50 each month. Complete the table and find the missing total cost for 2 months.",
-        buildContent: function (container) {
-          container.innerHTML = `
-            <p class="prompt">1. Complete the table.</p>
-            <table>
-              <tr><th>Number of Months</th><th>Total Cost ($)</th></tr>
-              <tr><td>1</td><td>82.50</td></tr>
-              <tr><td>2</td><td><input type="number" id="m2-c" step="0.01" /></td></tr>
-              <tr><td>3</td><td>247.50</td></tr>
-            </table>
-            <p class="prompt">2. What is the total cost for 2 months?</p>
-            <input type="number" id="m2-final" step="0.01" placeholder="Total cost for 2 months" />
-          `;
+        id:"M2",
+        emoji:"🏬",
+        title:"Storage Center",
+        dok:2,
+        points:1,
+        brief:"Use a proportional table to find a missing total.",
+        story:"You are pricing monthly storage rentals for a customer service board.",
+        description:"A storage center charges $82.50 each month. Complete the table and find the missing total cost for 2 months.",
+        build(container){
+          container.innerHTML = [
+            buildTaskCard(
+              "Complete the Table",
+              `
+              <table>
+                <tr><th>Number of Months</th><th>Total Cost ($)</th></tr>
+                <tr><td>1</td><td>82.50</td></tr>
+                <tr><td>2</td><td><input type="number" id="m2-c" step="0.01" /></td></tr>
+                <tr><td>3</td><td>247.50</td></tr>
+              </table>
+              <p class="micro-note">Think: 2 months means 2 groups of $82.50.</p>
+              `,
+              "Table"
+            ),
+            buildTaskCard(
+              "Enter the Final Total",
+              `
+              <input type="number" id="m2-final" step="0.01" placeholder="Total cost for 2 months" />
+              `,
+              "Finish"
+            )
+          ].join("");
         },
-        check: function () {
-          const cRaw = document.getElementById("m2-c").value;
-          const finalRaw = document.getElementById("m2-final").value;
-          const c = parseFloat(cRaw);
-          const f = parseFloat(finalRaw);
+        check(){
+          const c = parseFloat(document.getElementById("m2-c").value);
+          const f = parseFloat(document.getElementById("m2-final").value);
           let score = 0;
-          let total = 2;
-          let messages = [];
-
-          if (!isNaN(c) && Math.abs(c - 165) < 0.01) {
-            score += 1;
-            messages.push("The missing value C = 165 is correct.");
-          } else {
-            messages.push("Remember: each month is $82.50, so for 2 months the total is 2 × 82.50 = 165.");
+          const total = 2;
+          const messages = [];
+          if(approxEqual(c,165)){
+            score++;
+            messages.push("The missing table value is correct: <strong>$165.00</strong>.");
+          }else{
+            messages.push("Multiply $82.50 by 2 to get the cost for 2 months: <strong>$165.00</strong>.");
           }
-
-          if (!isNaN(f) && Math.abs(f - 165) < 0.01) {
-            score += 1;
-            messages.push("You correctly found the total cost for 2 months as $165.");
-          } else {
-            messages.push("Check your final total: it should match the value for 2 months (C = 165).");
+          if(approxEqual(f,165)){
+            score++;
+            messages.push("You correctly found the total for 2 months.");
+          }else{
+            messages.push("Your final answer should match the 2-month table value.");
           }
           return { score, total, messages };
         }
       },
-
-      // Q3: Proportional table, unit cost
       {
-        id: "M3",
-        title: "Pears Purchase",
-        dok: 2,
-        points: 1.0,
-        standard: "6.EE.C.9",
-        brief: "Complete a proportional table using a unit price.",
-        description:
-          "José buys pears that cost $1.25 each. Complete the table to find the total cost for 6, 8, and 9 pears.",
-        buildContent: function (container) {
-          container.innerHTML = `
-            <p class="prompt">1. Use $1.25 per pear to fill the table.</p>
-            <table>
-              <tr><th>Number of Pears</th><th>Total Cost ($)</th></tr>
-              <tr><td>6</td><td><input type="number" id="m3-a" step="0.01" /></td></tr>
-              <tr><td>8</td><td><input type="number" id="m3-b" step="0.01" /></td></tr>
-              <tr><td>9</td><td><input type="number" id="m3-c" step="0.01" /></td></tr>
-            </table>
-            <p class="prompt">2. Explain how you used the unit price to complete the table.</p>
-            <textarea id="m3-explain" placeholder="Explain how multiplying by 1.25 helped."></textarea>
-          `;
+        id:"M3",
+        emoji:"🍐",
+        title:"Pears Purchase",
+        dok:2,
+        points:1,
+        brief:"Use a unit price to complete a table.",
+        story:"You are helping a market stand create a digital price board.",
+        description:"José buys pears that cost $1.25 each. Complete the table to find the total cost for 6, 8, and 9 pears.",
+        build(container){
+          container.innerHTML = [
+            buildTaskCard(
+              "Fill in the Cost Table",
+              `
+              <table>
+                <tr><th>Number of Pears</th><th>Total Cost ($)</th></tr>
+                <tr><td>6</td><td><input type="number" id="m3-a" step="0.01" /></td></tr>
+                <tr><td>8</td><td><input type="number" id="m3-b" step="0.01" /></td></tr>
+                <tr><td>9</td><td><input type="number" id="m3-c" step="0.01" /></td></tr>
+              </table>
+              `,
+              "Table"
+            ),
+            buildTaskCard(
+              "Explain Your Strategy",
+              `
+              <textarea id="m3-explain" placeholder="Explain how you used the unit price of $1.25."></textarea>
+              <div class="eq-bank">
+                <span class="eq-chip" data-fill="m3-explain" data-text="I multiplied the number of pears by 1.25 because each pear costs $1.25.">Multiply by 1.25</span>
+                <span class="eq-chip" data-fill="m3-explain" data-text="The total cost depends on how many pears José buys.">Depends on pears</span>
+              </div>
+              `,
+              "Explain"
+            )
+          ].join("");
+          wireChipFill();
         },
-        check: function () {
+        check(){
           const a = parseFloat(document.getElementById("m3-a").value);
           const b = parseFloat(document.getElementById("m3-b").value);
           const c = parseFloat(document.getElementById("m3-c").value);
           const exp = (document.getElementById("m3-explain").value || "").trim();
           let score = 0;
-          let total = 4;
-          let messages = [];
+          const total = 4;
+          const messages = [];
 
-          if (!isNaN(a) && Math.abs(a - 7.5) < 0.01) {
-            score += 1;
-            messages.push("The cost for 6 pears (7.50) is correct.");
-          } else {
-            messages.push("For 6 pears: 6 × 1.25 = 7.50.");
+          if(approxEqual(a,7.5)){ score++; messages.push("6 pears = <strong>$7.50</strong>."); }
+          else messages.push("For 6 pears: 6 × 1.25 = <strong>7.50</strong>.");
+
+          if(approxEqual(b,10)){ score++; messages.push("8 pears = <strong>$10.00</strong>."); }
+          else messages.push("For 8 pears: 8 × 1.25 = <strong>10.00</strong>.");
+
+          if(approxEqual(c,11.25)){ score++; messages.push("9 pears = <strong>$11.25</strong>."); }
+          else messages.push("For 9 pears: 9 × 1.25 = <strong>11.25</strong>.");
+
+          if(exp.length >= 18){
+            score++;
+            messages.push("Your explanation clearly describes using the unit price.");
+          }else{
+            messages.push("Explain that you multiplied the number of pears by 1.25 because each pear costs $1.25.");
           }
-          if (!isNaN(b) && Math.abs(b - 10) < 0.01) {
-            score += 1;
-            messages.push("The cost for 8 pears (10.00) is correct.");
-          } else {
-            messages.push("For 8 pears: 8 × 1.25 = 10.00.");
-          }
-          if (!isNaN(c) && Math.abs(c - 11.25) < 0.01) {
-            score += 1;
-            messages.push("The cost for 9 pears (11.25) is correct.");
-          } else {
-            messages.push("For 9 pears: 9 × 1.25 = 11.25.");
-          }
-          if (exp.length >= 15) {
-            score += 1;
-            messages.push("You explained your strategy with enough detail.");
-          } else {
-            messages.push("Add more detail: mention that you multiplied the number of pears by 1.25.");
-          }
+
           return { score, total, messages };
         }
       },
-
-      // Q4: Coordinate graphing, constant rate
       {
-        id: "M4",
-        title: "Balloon Builder",
-        dok: 2,
-        points: 1.0,
-        standard: "6.EE.C.9",
-        brief: "Graph a proportional relationship on a discrete grid.",
-        description:
-          "Terrence fills helium balloons at a constant rate of 7 balloons every minute. Use the grid to plot points that show the relationship between minutes and number of balloons.",
-        buildContent: function (container) {
-          container.innerHTML = `
-            <p class="prompt">Click cells to mark points where (minutes, balloons) follow 7 balloons per minute.</p>
-            <div class="graph-axes-labels">
-              <span>x-axis: Minutes (0–4)</span>
-              <span>y-axis: Balloons (0–28)</span>
-            </div>
-            <div id="m4-grid" class="graph-grid"></div>
-            <p style="font-size:0.8rem;color:#555;">Hint: If the rate is 7 balloons each minute, then at 1 minute there are 7 balloons, at 2 minutes 14 balloons, and so on.</p>
-          `;
-
-          const grid = document.getElementById("m4-grid");
-          // 5 x-values (0 to 4) and 5 y-values (0,7,14,21,28)
-          const xs = [0, 1, 2, 3, 4];
-          const ys = [0, 7, 14, 21, 28];
-
-          ys.slice().reverse().forEach(y => {
-            xs.forEach(x => {
-              const cell = document.createElement("div");
-              cell.className = "graph-cell";
-              cell.dataset.x = x;
-              cell.dataset.y = y;
-              const label = document.createElement("span");
-              label.textContent = `(${x},${y})`;
-              cell.appendChild(label);
-              cell.addEventListener("click", () => {
-                cell.classList.toggle("active");
-              });
-              grid.appendChild(cell);
-            });
-          });
+        id:"M4",
+        emoji:"🎈",
+        title:"Balloon Builder",
+        dok:2,
+        points:1,
+        brief:"Graph a proportional relationship on an interactive grid.",
+        story:"You are programming a balloon machine that fills balloons at the same rate every minute.",
+        description:"Terrence fills helium balloons at a constant rate of 7 balloons every minute. Use the grid to plot points that show the relationship between minutes and number of balloons.",
+        build(container){
+          container.innerHTML = [
+            buildTaskCard(
+              "Plot the Relationship",
+              `
+              <p>Select the points that fit the rule <strong>balloons = 7 × minutes</strong>.</p>
+              ${graphTemplate("m4-grid","Minutes (0–4)","Balloons (0–28)",[0,1,2,3,4],[0,7,14,21,28])}
+              <div class="micro-note">Strong choices include (1,7), (2,14), (3,21), and (4,28).</div>
+              `,
+              "Graph"
+            )
+          ].join("");
+          populateGraph("m4-grid",[0,1,2,3,4],[0,7,14,21,28]);
         },
-        check: function () {
-          const cells = document.querySelectorAll("#m4-grid .graph-cell");
-          let selected = [];
-          cells.forEach(c => {
-            if (c.classList.contains("active")) {
-              selected.push({ x: parseInt(c.dataset.x), y: parseInt(c.dataset.y) });
-            }
-          });
+        check(){
+          const selected = [...document.querySelectorAll("#m4-grid .graph-cell.active")].map(c => ({
+            x:Number(c.dataset.x), y:Number(c.dataset.y)
+          }));
           const correctPoints = [
-            { x: 0, y: 0 },
-            { x: 1, y: 7 },
-            { x: 2, y: 14 },
-            { x: 3, y: 21 },
-            { x: 4, y: 28 }
+            {x:0,y:0},{x:1,y:7},{x:2,y:14},{x:3,y:21},{x:4,y:28}
           ];
-          let score = 0;
-          let total = 2;
-          let messages = [];
-
+          markGraph("#m4-grid", correctPoints);
           let correctSelected = 0;
           correctPoints.forEach(pt => {
-            if (selected.some(s => s.x === pt.x && s.y === pt.y)) correctSelected++;
+            if(selected.some(s => s.x === pt.x && s.y === pt.y)) correctSelected++;
           });
-
-          if (correctSelected >= 3) {
-            score += 1;
-            messages.push("You selected several correct points that follow 7 balloons per minute.");
-          } else {
-            messages.push("Try to mark points where y = 7x, such as (1,7), (2,14), (3,21).");
+          let score = 0;
+          const total = 2;
+          const messages = [];
+          if(correctSelected >= 3){
+            score++;
+            messages.push("You selected several correct points that match <strong>y = 7x</strong>.");
+          }else{
+            messages.push("Try using the rate of 7 balloons per minute to build points like (1,7) and (2,14).");
           }
-          if (selected.length === correctSelected && selected.length > 0) {
-            score += 1;
-            messages.push("All your selected points follow the correct rate—great job!");
-          } else if (selected.length === 0) {
-            messages.push("Select at least one point to show the relationship.");
-          } else {
-            messages.push("Some selected points do not follow y = 7x. Check the rate again.");
+          if(selected.length > 0 && selected.length === correctSelected){
+            score++;
+            messages.push("All of your chosen points fit the relationship.");
+          }else if(selected.length === 0){
+            messages.push("Select at least one point on the grid.");
+          }else{
+            messages.push("Some selected points do not match the rule. Remove any point that is not on <strong>y = 7x</strong>.");
           }
-
           return { score, total, messages };
         }
       },
-
-      // Q5: Equation from table (hot dogs)
       {
-        id: "M5",
-        title: "Hot Dog Stand",
-        dok: 2,
-        points: 1.0,
-        standard: "6.EE.C.9",
-        brief: "Choose an equation that matches a proportional table.",
-        description:
-          "The table shows the number of hot dogs d on p plates. Choose the equation that represents the number of hot dogs on p plates.",
-        buildContent: function (container) {
-          container.innerHTML = `
-            <p class="prompt">1. Study the table.</p>
-            <table>
-              <tr><th>Number of Plates (p)</th><th>Number of Hot Dogs (d)</th></tr>
-              <tr><td>1</td><td>2</td></tr>
-              <tr><td>2</td><td>4</td></tr>
-              <tr><td>3</td><td>6</td></tr>
-              <tr><td>4</td><td>8</td></tr>
-            </table>
-            <p class="prompt">2. Choose the equation that fits the pattern.</p>
-            <select id="m5-eq">
-              <option value="">-- choose an equation --</option>
-              <option value="3p">d = 3p</option>
-              <option value="3p-1">d = 3p - 1</option>
-              <option value="2p">d = 2p</option>
-              <option value="2p+1">d = 2p + 1</option>
-            </select>
-            <p class="prompt">3. Explain how you used the table to decide.</p>
-            <textarea id="m5-explain" placeholder="Explain how you matched the equation to the table."></textarea>
-          `;
+        id:"M5",
+        emoji:"🌭",
+        title:"Hot Dog Stand",
+        dok:2,
+        points:1,
+        brief:"Choose an equation that matches a table.",
+        story:"You are helping a food stand turn its table into an equation for a menu screen.",
+        description:"The table shows the number of hot dogs d on p plates. Choose the equation that represents the number of hot dogs on p plates.",
+        build(container){
+          container.innerHTML = [
+            buildTaskCard(
+              "Study the Table",
+              `
+              <table>
+                <tr><th>Number of Plates (p)</th><th>Number of Hot Dogs (d)</th></tr>
+                <tr><td>1</td><td>2</td></tr>
+                <tr><td>2</td><td>4</td></tr>
+                <tr><td>3</td><td>6</td></tr>
+                <tr><td>4</td><td>8</td></tr>
+              </table>
+              `,
+              "Observe"
+            ),
+            buildTaskCard(
+              "Choose the Matching Equation",
+              `
+              <select id="m5-eq">
+                <option value="">-- choose an equation --</option>
+                <option value="3p">d = 3p</option>
+                <option value="3p-1">d = 3p - 1</option>
+                <option value="2p">d = 2p</option>
+                <option value="2p+1">d = 2p + 1</option>
+              </select>
+              <textarea id="m5-explain" placeholder="Explain how the table helped you choose."></textarea>
+              `,
+              "Reason"
+            )
+          ].join("");
         },
-        check: function () {
+        check(){
           const eq = document.getElementById("m5-eq").value;
           const exp = (document.getElementById("m5-explain").value || "").trim();
           let score = 0;
-          let total = 2;
-          let messages = [];
-          if (eq === "2p") {
-            score += 1;
-            messages.push("You chose d = 2p, which matches the table (2 hot dogs per plate).");
-          } else if (eq === "") {
-            messages.push("You did not choose an equation. Try again using the pattern in the table.");
-          } else {
-            messages.push("Check one row: with p = 1, d should be 2; only d = 2p fits all rows.");
+          const total = 2;
+          const messages = [];
+          if(eq === "2p"){
+            score++;
+            messages.push("Correct: the table shows <strong>2 hot dogs per plate</strong>, so <strong>d = 2p</strong>.");
+          }else{
+            messages.push("Check the pattern: every time p increases by 1, d increases by 2.");
           }
-          if (exp.length >= 15) {
-            score += 1;
-            messages.push("Your explanation gives enough detail about how you used the table.");
-          } else {
-            messages.push("Add more detail: describe how each plate has 2 hot dogs, so d = 2p.");
+          if(exp.length >= 15){
+            score++;
+            messages.push("Your explanation shows how the table connects to the equation.");
+          }else{
+            messages.push("Explain that each plate has 2 hot dogs, so the total is 2 times the number of plates.");
           }
           return { score, total, messages };
         }
       },
-
-      // Q6: Equation from graph (Abdi drives)
       {
-        id: "M6",
-        title: "Abdi's Road Trip",
-        dok: 2,
-        points: 1.0,
-        standard: "6.EE.C.9",
-        brief: "Match an equation to a linear graph.",
-        description:
-          "A graph shows the number of miles m Abdi drives in h hours. Use the sample table here that matches a constant rate to choose the correct equation.",
-        buildContent: function (container) {
-          container.innerHTML = `
-            <p class="prompt">1. The graph shows that Abdi drives 30 miles each hour.</p>
-            <table>
-              <tr><th>Hours (h)</th><th>Miles (m)</th></tr>
-              <tr><td>1</td><td>30</td></tr>
-              <tr><td>2</td><td>60</td></tr>
-              <tr><td>3</td><td>90</td></tr>
-            </table>
-            <p class="prompt">2. Which equation could be used to find the number of miles for any hours h?</p>
-            <select id="m6-eq">
-              <option value="">-- choose an equation --</option>
-              <option value="m=30h">m = 30h</option>
-              <option value="m=h+30">m = h + 30</option>
-              <option value="h=m+30">h = m + 30</option>
-              <option value="h=30m">h = 30m</option>
-            </select>
-          `;
+        id:"M6",
+        emoji:"🚗",
+        title:"Abdi's Road Trip",
+        dok:2,
+        points:1,
+        brief:"Match a linear graph situation to the correct equation.",
+        story:"You are helping a navigation app describe a constant travel rate.",
+        description:"A graph shows the number of miles m Abdi drives in h hours. Use the sample table here that matches a constant rate to choose the correct equation.",
+        build(container){
+          container.innerHTML = [
+            buildTaskCard(
+              "Use the Rate Table",
+              `
+              <table>
+                <tr><th>Hours (h)</th><th>Miles (m)</th></tr>
+                <tr><td>1</td><td>30</td></tr>
+                <tr><td>2</td><td>60</td></tr>
+                <tr><td>3</td><td>90</td></tr>
+              </table>
+              <select id="m6-eq">
+                <option value="">-- choose an equation --</option>
+                <option value="m=30h">m = 30h</option>
+                <option value="m=h+30">m = h + 30</option>
+                <option value="h=m+30">h = m + 30</option>
+                <option value="h=30m">h = 30m</option>
+              </select>
+              `,
+              "Choose"
+            )
+          ].join("");
         },
-        check: function () {
+        check(){
           const eq = document.getElementById("m6-eq").value;
           let score = 0;
-          let total = 1;
-          let messages = [];
-          if (eq === "m=30h") {
-            score += 1;
-            messages.push("Correct: m = 30h matches 30 miles for each hour.");
-          } else if (eq === "") {
-            messages.push("Choose the equation that says 'miles = 30 × hours'.");
-          } else {
-            messages.push("Check with h = 1: the equation should give m = 30.");
+          const total = 1;
+          const messages = [];
+          if(eq === "m=30h"){
+            score++;
+            messages.push("Correct: miles equal <strong>30 times hours</strong>, so <strong>m = 30h</strong>.");
+          }else{
+            messages.push("Use the table: if h = 1, then m should be 30. Which equation does that every time?");
           }
           return { score, total, messages };
         }
       },
-
-      // Q7A/B: Equation + graph from description
       {
-        id: "M7",
-        title: "Music Teacher",
-        dok: 2,
-        points: 2.0,
-        standard: "6.EE.C.9",
-        brief: "Write an equation and plot it on a grid.",
-        description:
-          "Each week Faith must practice and prepare 3 new musical pieces to teach. Let w represent the number of weeks and p represent the number of pieces she prepares.",
-        buildContent: function (container) {
-          container.innerHTML = `
-            <p class="prompt">1. Enter an equation relating w (weeks) and p (pieces).</p>
-            <input type="text" id="m7-eq" placeholder="Example: p = 3w" />
-            <p class="prompt">2. Plot points that fit your equation.</p>
-            <div class="graph-axes-labels">
-              <span>x-axis: Weeks (0–4)</span>
-              <span>y-axis: Pieces (0–12)</span>
-            </div>
-            <div id="m7-grid" class="graph-grid"></div>
-          `;
-          const grid = document.getElementById("m7-grid");
-          const xs = [0, 1, 2, 3, 4];
-          const ys = [0, 3, 6, 9, 12];
-          ys.slice().reverse().forEach(y => {
-            xs.forEach(x => {
-              const cell = document.createElement("div");
-              cell.className = "graph-cell";
-              cell.dataset.x = x;
-              cell.dataset.y = y;
-              const label = document.createElement("span");
-              label.textContent = `(${x},${y})`;
-              cell.appendChild(label);
-              cell.addEventListener("click", () => {
-                cell.classList.toggle("active");
-              });
-              grid.appendChild(cell);
-            });
-          });
+        id:"M7",
+        emoji:"🎵",
+        title:"Music Teacher",
+        dok:2,
+        points:2,
+        brief:"Write an equation and graph it.",
+        story:"You are creating a practice tracker for a music teacher who prepares the same number of pieces each week.",
+        description:"Each week Faith must practice and prepare 3 new musical pieces to teach. Let w represent the number of weeks and p represent the number of pieces she prepares.",
+        build(container){
+          container.innerHTML = [
+            buildTaskCard(
+              "Write the Equation",
+              `
+              <input type="text" id="m7-eq" placeholder="Example: p = 3w" />
+              <div class="eq-bank">
+                <span class="eq-chip" data-fill="m7-eq" data-text="p = 3w">p = 3w</span>
+                <span class="eq-chip" data-fill="m7-eq" data-text="3w = p">3w = p</span>
+              </div>
+              `,
+              "Equation"
+            ),
+            buildTaskCard(
+              "Plot Matching Points",
+              `
+              ${graphTemplate("m7-grid","Weeks (0–4)","Pieces (0–12)",[0,1,2,3,4],[0,3,6,9,12])}
+              `,
+              "Graph"
+            )
+          ].join("");
+          wireChipFill();
+          populateGraph("m7-grid",[0,1,2,3,4],[0,3,6,9,12]);
         },
-        check: function () {
-          const eqText = (document.getElementById("m7-eq").value || "").replace(/\s+/g, "").toLowerCase();
-          const cells = document.querySelectorAll("#m7-grid .graph-cell");
-          let selected = [];
-          cells.forEach(c => {
-            if (c.classList.contains("active")) {
-              selected.push({ x: parseInt(c.dataset.x), y: parseInt(c.dataset.y) });
-            }
-          });
+        check(){
+          const eqText = normalizeEquation(document.getElementById("m7-eq").value);
+          const selected = [...document.querySelectorAll("#m7-grid .graph-cell.active")].map(c => ({
+            x:Number(c.dataset.x), y:Number(c.dataset.y)
+          }));
           const correctPoints = [
-            { x: 0, y: 0 },
-            { x: 1, y: 3 },
-            { x: 2, y: 6 },
-            { x: 3, y: 9 },
-            { x: 4, y: 12 }
+            {x:0,y:0},{x:1,y:3},{x:2,y:6},{x:3,y:9},{x:4,y:12}
           ];
+          markGraph("#m7-grid", correctPoints);
           let score = 0;
-          let total = 3;
-          let messages = [];
-
-          if (eqText === "p=3w" || eqText === "3w=p" || eqText === "p=3*w") {
-            score += 1;
-            messages.push("Your equation correctly shows p = 3w.");
-          } else if (eqText === "") {
-            messages.push("Write an equation where pieces equal 3 times the number of weeks (p = 3w).");
-          } else {
-            messages.push("Check your equation: pieces should be 3 times the number of weeks.");
+          const total = 3;
+          const messages = [];
+          if(eqText === "p=3w" || eqText === "3w=p" || eqText === "p=3*w"){
+            score++;
+            messages.push("Your equation is correct: <strong>p = 3w</strong>.");
+          }else{
+            messages.push("Pieces increase by 3 every week, so the rule is <strong>p = 3w</strong>.");
           }
-
           let correctSelected = 0;
           correctPoints.forEach(pt => {
-            if (selected.some(s => s.x === pt.x && s.y === pt.y)) correctSelected++;
+            if(selected.some(s => s.x === pt.x && s.y === pt.y)) correctSelected++;
           });
-
-          if (correctSelected >= 2) {
-            score += 1;
-            messages.push("You plotted points that follow the 3 pieces per week pattern.");
-          } else {
-            messages.push("Try plotting (1,3), (2,6), (3,9) to match p = 3w.");
+          if(correctSelected >= 2){
+            score++;
+            messages.push("You graphed points that follow the 3-per-week relationship.");
+          }else{
+            messages.push("Try points such as (1,3), (2,6), and (3,9).");
           }
-
-          if (selected.length === correctSelected && selected.length > 0) {
-            score += 1;
-            messages.push("All your selected points are on the correct line.");
-          } else if (selected.length === 0) {
-            messages.push("Select at least one point to show the pattern.");
-          } else {
-            messages.push("Some points are off the pattern; adjust them to match p = 3w.");
+          if(selected.length > 0 && selected.length === correctSelected){
+            score++;
+            messages.push("All selected points are on the correct pattern.");
+          }else if(selected.length === 0){
+            messages.push("Select at least one point on the graph.");
+          }else{
+            messages.push("Some points do not fit the rule. Keep only points that match <strong>p = 3w</strong>.");
           }
-
           return { score, total, messages };
         }
       },
-
-      // Q8A/B: Equation + table from description
       {
-        id: "M8",
-        title: "Coffee for Charity",
-        dok: 2,
-        points: 2.0,
-        standard: "6.EE.C.9",
-        brief: "Write an equation and fill a table for a unit rate.",
-        description:
-          "The owner of a coffee shop is donating $0.50 for each cup of coffee sold. Let c be the number of cups sold and d the amount donated in dollars.",
-        buildContent: function (container) {
-          container.innerHTML = `
-            <p class="prompt">1. Enter an equation relating cups c and donation d.</p>
-            <input type="text" id="m8-eq" placeholder="Example: d = 0.5c" />
-            <p class="prompt">2. Complete the table.</p>
-            <table>
-              <tr><th>Number of Cups Sold (c)</th><th>Amount Donated ($)</th></tr>
-              <tr><td>1</td><td><input type="number" id="m8-a" step="0.01" /></td></tr>
-              <tr><td>2</td><td><input type="number" id="m8-b" step="0.01" /></td></tr>
-              <tr><td>3</td><td><input type="number" id="m8-c" step="0.01" /></td></tr>
-            </table>
-          `;
+        id:"M8",
+        emoji:"☕",
+        title:"Coffee for Charity",
+        dok:2,
+        points:2,
+        brief:"Write an equation and fill in a donation table.",
+        story:"You are building a charity tracker that updates every time a cup of coffee is sold.",
+        description:"The owner of a coffee shop is donating $0.50 for each cup of coffee sold. Let c be the number of cups sold and d the amount donated in dollars.",
+        build(container){
+          container.innerHTML = [
+            buildTaskCard(
+              "Write the Donation Rule",
+              `
+              <input type="text" id="m8-eq" placeholder="Example: d = 0.5c" />
+              <div class="starter-box">
+                <strong>Think</strong>
+                If 1 cup adds $0.50, then the amount donated depends on the number of cups.
+              </div>
+              `,
+              "Equation"
+            ),
+            buildTaskCard(
+              "Complete the Table",
+              `
+              <table>
+                <tr><th>Number of Cups Sold (c)</th><th>Amount Donated ($)</th></tr>
+                <tr><td>1</td><td><input type="number" id="m8-a" step="0.01" /></td></tr>
+                <tr><td>2</td><td><input type="number" id="m8-b" step="0.01" /></td></tr>
+                <tr><td>3</td><td><input type="number" id="m8-c" step="0.01" /></td></tr>
+              </table>
+              `,
+              "Table"
+            )
+          ].join("");
         },
-        check: function () {
-          const eqText = (document.getElementById("m8-eq").value || "").replace(/\s+/g, "").toLowerCase();
+        check(){
+          const eqText = normalizeEquation(document.getElementById("m8-eq").value);
           const a = parseFloat(document.getElementById("m8-a").value);
           const b = parseFloat(document.getElementById("m8-b").value);
           const c = parseFloat(document.getElementById("m8-c").value);
           let score = 0;
-          let total = 4;
-          let messages = [];
+          const total = 4;
+          const messages = [];
+          if(eqText === "d=0.5c" || eqText === "d=.5c" || eqText === "0.5c=d" || eqText === ".5c=d" || eqText === "d=0.50c"){
+            score++;
+            messages.push("Correct equation: <strong>d = 0.5c</strong>.");
+          }else{
+            messages.push("The donation is 50 cents for each cup, so the rule is <strong>d = 0.5c</strong>.");
+          }
+          if(approxEqual(a,0.5)){ score++; messages.push("1 cup → <strong>$0.50</strong>."); }
+          else messages.push("For 1 cup, the donation is <strong>$0.50</strong>.");
 
-          if (eqText === "d=0.5c" || eqText === "d=0.50c" || eqText === "0.5c=d") {
-            score += 1;
-            messages.push("Your equation correctly shows d = 0.5c.");
-          } else if (eqText === "") {
-            messages.push("Write an equation where the donation equals 0.50 times the number of cups (d = 0.5c).");
-          } else {
-            messages.push("Check your equation: the donation should be 0.5 times the number of cups.");
-          }
+          if(approxEqual(b,1.0)){ score++; messages.push("2 cups → <strong>$1.00</strong>."); }
+          else messages.push("For 2 cups, multiply 2 × 0.50 = <strong>1.00</strong>.");
 
-          if (!isNaN(a) && Math.abs(a - 0.5) < 0.01) {
-            score += 1;
-            messages.push("For 1 cup, a donation of $0.50 is correct.");
-          } else {
-            messages.push("For 1 cup: 1 × 0.50 = 0.50.");
-          }
-          if (!isNaN(b) && Math.abs(b - 1.0) < 0.01) {
-            score += 1;
-            messages.push("For 2 cups, a donation of $1.00 is correct.");
-          } else {
-            messages.push("For 2 cups: 2 × 0.50 = 1.00.");
-          }
-          if (!isNaN(c) && Math.abs(c - 1.5) < 0.01) {
-            score += 1;
-            messages.push("For 3 cups, a donation of $1.50 is correct.");
-          } else {
-            messages.push("For 3 cups: 3 × 0.50 = 1.50.");
-          }
+          if(approxEqual(c,1.5)){ score++; messages.push("3 cups → <strong>$1.50</strong>."); }
+          else messages.push("For 3 cups, multiply 3 × 0.50 = <strong>1.50</strong>.");
 
           return { score, total, messages };
         }
       },
-
-      // Q9: Compare two proportional situations from a table
       {
-        id: "M9",
-        title: "Allowance Race",
-        dok: 2,
-        points: 1.0,
-        standard: "6.EE.C.9",
-        brief: "Extend a pattern and compare earnings.",
-        description:
-          "The table shows the amount Jorge and Cindya earned in allowance during the last 4 weeks. If the pattern continues, how much more will Cindya earn than Jorge after 9 weeks?",
-        buildContent: function (container) {
-          container.innerHTML = `
-            <p class="prompt">1. Study the allowance table.</p>
-            <table>
-              <tr><th>Weeks</th><th>Jorge's Allowance ($)</th><th>Cindya's Allowance ($)</th></tr>
-              <tr><td>1</td><td>9</td><td>11</td></tr>
-              <tr><td>2</td><td>18</td><td>22</td></tr>
-              <tr><td>3</td><td>27</td><td>33</td></tr>
-              <tr><td>4</td><td>36</td><td>44</td></tr>
-            </table>
-            <p class="prompt">2. Predict their allowances after 9 weeks.</p>
-            <label>Jorge after 9 weeks:</label>
-            <input type="number" id="m9-jorge" />
-            <label>Cindya after 9 weeks:</label>
-            <input type="number" id="m9-cindya" />
-            <p class="prompt">3. How much more does Cindya earn than Jorge after 9 weeks?</p>
-            <input type="number" id="m9-diff" />
-          `;
+        id:"M9",
+        emoji:"💵",
+        title:"Allowance Race",
+        dok:2,
+        points:1,
+        brief:"Compare two proportional relationships.",
+        story:"You are helping two students compare their weekly allowance patterns over time.",
+        description:"The table shows the amount Jorge and Cindya earned in allowance during the last 4 weeks. If the pattern continues, how much more will Cindya earn than Jorge after 9 weeks?",
+        build(container){
+          container.innerHTML = [
+            buildTaskCard(
+              "Study and Extend the Pattern",
+              `
+              <table>
+                <tr><th>Weeks</th><th>Jorge's Allowance ($)</th><th>Cindya's Allowance ($)</th></tr>
+                <tr><td>1</td><td>9</td><td>11</td></tr>
+                <tr><td>2</td><td>18</td><td>22</td></tr>
+                <tr><td>3</td><td>27</td><td>33</td></tr>
+                <tr><td>4</td><td>36</td><td>44</td></tr>
+              </table>
+              <label>Jorge after 9 weeks</label>
+              <input type="number" id="m9-jorge" />
+              <label>Cindya after 9 weeks</label>
+              <input type="number" id="m9-cindya" />
+              <label>How much more does Cindya earn?</label>
+              <input type="number" id="m9-diff" />
+              `,
+              "Compare"
+            )
+          ].join("");
         },
-        check: function () {
+        check(){
           const j = parseFloat(document.getElementById("m9-jorge").value);
           const c = parseFloat(document.getElementById("m9-cindya").value);
           const d = parseFloat(document.getElementById("m9-diff").value);
           let score = 0;
-          let total = 3;
-          let messages = [];
+          const total = 3;
+          const messages = [];
+          if(approxEqual(j,81)){ score++; messages.push("Jorge after 9 weeks is <strong>$81</strong>."); }
+          else messages.push("Jorge earns $9 each week, so 9 × 9 = <strong>81</strong>.");
 
-          if (!isNaN(j) && Math.abs(j - 81) < 0.01) {
-            score += 1;
-            messages.push("Jorge's allowance after 9 weeks is correctly 81.");
-          } else {
-            messages.push("Jorge earns 9 per week: 9 × 9 = 81.");
-          }
-          if (!isNaN(c) && Math.abs(c - 99) < 0.01) {
-            score += 1;
-            messages.push("Cindya's allowance after 9 weeks is correctly 99.");
-          } else {
-            messages.push("Cindya earns 11 per week: 11 × 9 = 99.");
-          }
-          if (!isNaN(d) && Math.abs(d - 18) < 0.01) {
-            score += 1;
-            messages.push("The difference (99 − 81 = 18) is correct.");
-          } else {
-            messages.push("The difference after 9 weeks should be 99 − 81 = 18.");
-          }
+          if(approxEqual(c,99)){ score++; messages.push("Cindya after 9 weeks is <strong>$99</strong>."); }
+          else messages.push("Cindya earns $11 each week, so 11 × 9 = <strong>99</strong>.");
+
+          if(approxEqual(d,18)){ score++; messages.push("Difference is <strong>$18</strong>."); }
+          else messages.push("Subtract 99 − 81 to get <strong>18</strong>.");
+
           return { score, total, messages };
         }
       },
-
-      // Q10: Multi-step reasoning / essay
       {
-        id: "M10",
-        title: "Coupon Mystery",
-        dok: 3,
-        points: 1.0,
-        standard: "6.EE.C.9",
-        brief: "Explain a multi-step calculation with a discount and change.",
-        description:
-          "Bonnie has a coupon for $10 off. She gives the cashier two $20 bills and receives $14.05 in change. Explain how to determine the original price of the items Bonnie purchases.",
-        buildContent: function (container) {
-          container.innerHTML = `
-            <p class="prompt">1. Explain step by step how to find the original price.</p>
-            <textarea id="m10-explain" placeholder="Describe how you use the coupon, total paid, and change to find the original price."></textarea>
-            <p class="prompt">2. What is the original price of the items?</p>
-            <input type="number" id="m10-price" step="0.01" />
-          `;
+        id:"M10",
+        emoji:"🧾",
+        title:"Coupon Mystery",
+        dok:3,
+        points:1,
+        brief:"Explain a multi-step problem with money and change.",
+        story:"You are reconstructing a purchase total from the amount paid, the change received, and a coupon.",
+        description:"Bonnie has a coupon for $10 off. She gives the cashier two $20 bills and receives $14.05 in change. Explain how to determine the original price of the items Bonnie purchases.",
+        build(container){
+          container.innerHTML = [
+            buildTaskCard(
+              "Explain the Steps",
+              `
+              <textarea id="m10-explain" placeholder="Describe how to use the total paid, change, and coupon to find the original price."></textarea>
+              <div class="starter-box">
+                <strong>Possible structure</strong>
+                First I found the amount Bonnie actually paid after the coupon by...
+              </div>
+              `,
+              "Explain"
+            ),
+            buildTaskCard(
+              "Find the Original Price",
+              `
+              <input type="number" id="m10-price" step="0.01" placeholder="Original price" />
+              `,
+              "Solve"
+            )
+          ].join("");
         },
-        check: function () {
-          const exp = (document.getElementById("m10-explain").value || "").trim();
+        check(){
+          const exp = (document.getElementById("m10-explain").value || "").trim().toLowerCase();
           const price = parseFloat(document.getElementById("m10-price").value);
           let score = 0;
-          let total = 2;
-          let messages = [];
-
-          // Total Bonnie hands over: 40
-          // Change: 14.05, so amount after coupon: 40 - 14.05 = 25.95
-          // Coupon: 10 off, so original = 25.95 + 10 = 35.95
-          if (!isNaN(price) && Math.abs(price - 35.95) < 0.01) {
-            score += 1;
-            messages.push("You found the correct original price: $35.95.");
-          } else {
-            messages.push("Check: 40 − 14.05 = 25.95 is the discounted total, then add $10 to get $35.95.");
+          const total = 2;
+          const messages = [];
+          if(approxEqual(price,35.95)){
+            score++;
+            messages.push("Correct original price: <strong>$35.95</strong>.");
+          }else{
+            messages.push("She gave $40 and got $14.05 back, so she paid <strong>$25.95</strong> after the coupon. Add $10 back to get <strong>$35.95</strong>.");
           }
 
-          const keyPhrases = [
-            "40 - 14.05",
-            "40-14.05",
-            "25.95",
-            "add 10",
-            "plus 10"
-          ];
-          let hits = 0;
-          const lower = exp.toLowerCase();
-          keyPhrases.forEach(p => {
-            if (lower.includes(p.toLowerCase())) hits++;
-          });
+          const strongExplain =
+            exp.length >= 28 &&
+            (
+              exp.includes("40") ||
+              exp.includes("$40")
+            ) &&
+            (
+              exp.includes("14.05") ||
+              exp.includes("$14.05")
+            ) &&
+            (
+              exp.includes("25.95") ||
+              exp.includes("add 10") ||
+              exp.includes("plus 10")
+            );
 
-          if (exp.length >= 25 && hits >= 1) {
-            score += 1;
-            messages.push("Your explanation shows a clear multi-step plan.");
-          } else {
-            messages.push("Explain in words: subtract the change from $40, then add the $10 coupon value.");
+          if(strongExplain){
+            score++;
+            messages.push("Your explanation includes the key steps of the solution.");
+          }else{
+            messages.push("A strong explanation should mention subtracting the change from $40, then adding the $10 coupon value back.");
           }
+
           return { score, total, messages };
         }
       },
-
-      // Q11: Simple linear expression evaluation
       {
-        id: "M11",
-        title: "Lawn Mower Earnings",
-        dok: 1,
-        points: 1.0,
-        standard: "6.EE.C.9",
-        brief: "Use a simple expression to find total earnings.",
-        description:
-          "Jeff earns $10 for each lawn that he mows this week. He spends $10 on gas for the mower. How much will Jeff earn if he mows 6 lawns?",
-        buildContent: function (container) {
-          container.innerHTML = `
-            <p class="prompt">1. Write an expression that represents Jeff's total earnings for 6 lawns after paying for gas.</p>
-            <input type="text" id="m11-expr" placeholder="Example: 10 × 6 − 10" />
-            <p class="prompt">2. Evaluate your expression.</p>
-            <input type="number" id="m11-total" />
-          `;
+        id:"M11",
+        emoji:"🌱",
+        title:"Lawn Mower Earnings",
+        dok:1,
+        points:1,
+        brief:"Write and evaluate an expression.",
+        story:"You are helping Jeff predict his profit after mowing lawns and paying for gas.",
+        description:"Jeff earns $10 for each lawn that he mows this week. He spends $10 on gas for the mower. How much will Jeff earn if he mows 6 lawns?",
+        build(container){
+          container.innerHTML = [
+            buildTaskCard(
+              "Write an Expression",
+              `
+              <input type="text" id="m11-expr" placeholder="Example: 10 × 6 − 10" />
+              <div class="eq-bank">
+                <span class="eq-chip" data-fill="m11-expr" data-text="10 × 6 − 10">10 × 6 − 10</span>
+                <span class="eq-chip" data-fill="m11-expr" data-text="(10 × 6) - 10">(10 × 6) - 10</span>
+              </div>
+              `,
+              "Expression"
+            ),
+            buildTaskCard(
+              "Evaluate the Expression",
+              `
+              <input type="number" id="m11-total" placeholder="Total earnings" />
+              `,
+              "Evaluate"
+            )
+          ].join("");
+          wireChipFill();
         },
-        check: function () {
-          const expr = (document.getElementById("m11-expr").value || "").replace(/\s+/g, "");
-          const total = parseFloat(document.getElementById("m11-total").value);
+        check(){
+          const expr = normalizeEquation(document.getElementById("m11-expr").value);
+          const totalVal = parseFloat(document.getElementById("m11-total").value);
           let score = 0;
-          let totalPts = 2;
-          let messages = [];
-
-          if (expr.includes("10*6-10") || expr.includes("10x6-10") || expr.includes("10*6-10") || expr.includes("10(6)-10")) {
-            score += 1;
-            messages.push("Your expression shows '6 lawns × $10, then minus $10 for gas'.");
-          } else if (expr === "") {
-            messages.push("Write an expression like 10 × 6 − 10.");
-          } else {
-            messages.push("Make sure you multiply 10 by 6 lawns and then subtract 10 for gas.");
+          const total = 2;
+          const messages = [];
+          const acceptable =
+            expr.includes("10*6-10") ||
+            expr.includes("(10*6)-10") ||
+            expr.includes("10x6-10") ||
+            expr.includes("10(6)-10");
+          if(acceptable){
+            score++;
+            messages.push("Your expression shows <strong>6 lawns × $10, then minus $10</strong> for gas.");
+          }else{
+            messages.push("Multiply 10 dollars by 6 lawns, then subtract 10 dollars for gas.");
           }
-
-          if (!isNaN(total) && Math.abs(total - 50) < 0.01) {
-            score += 1;
-            messages.push("Jeff's total earnings after gas are $50.");
-          } else {
-            messages.push("Compute 10 × 6 − 10 = 50.");
+          if(approxEqual(totalVal,50)){
+            score++;
+            messages.push("Correct total earnings: <strong>$50</strong>.");
+          }else{
+            messages.push("Compute 10 × 6 − 10 = <strong>50</strong>.");
           }
-
-          return { score, total: totalPts, messages };
+          return { score, total, messages };
         }
       }
     ];
 
-    /************************
-     * UI & game logic code *
-     ************************/
-    const missionListElem = document.getElementById("mission-list");
-    const missionTitleElem = document.getElementById("mission-title");
-    const missionDescElem = document.getElementById("mission-desc");
-    const missionContentElem = document.getElementById("mission-content");
-    const checkBtn = document.getElementById("check-btn");
-    const recordBtn = document.getElementById("record-btn");
-    const clearBtn = document.getElementById("clear-btn");
-    const feedbackElem = document.getElementById("feedback");
-    const statusMissionElem = document.getElementById("status-mission");
-    const statusPointsElem = document.getElementById("status-points");
-    const logEntriesElem = document.getElementById("log-entries");
+    function wireFillButtons(){
+      document.querySelectorAll("[data-fill]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const target = document.getElementById(btn.dataset.fill);
+          if(target){
+            target.value = btn.dataset.text;
+            target.focus();
+          }
+        });
+      });
+    }
 
-    let currentMission = null;
+    function wireChipFill(){
+      document.querySelectorAll(".eq-chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          const target = document.getElementById(chip.dataset.fill);
+          if(target){
+            target.value = chip.dataset.text;
+            target.focus();
+          }
+        });
+      });
+    }
 
-    function renderMissionCards() {
+    function renderMissionCards(){
+      missionGrid.innerHTML = "";
       missions.forEach(m => {
         const card = document.createElement("article");
         card.className = "mission-card";
         card.dataset.id = m.id;
+        if(gameState.currentMissionId === m.id) card.classList.add("active");
+        if(gameState.completed.has(m.id)) card.classList.add("done");
         card.innerHTML = `
-          <div class="mission-title">${m.title}</div>
-          <div class="mission-meta">
-            <span class="badge badge-std">${m.standard}</span>
-            <span class="badge dok${m.dok}">DOK ${m.dok}</span>
+          <div class="card-top">
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <div class="emoji">${m.emoji}</div>
+              <div>
+                <h3 class="mission-name">${m.id} • ${m.title}</h3>
+                <p class="mission-brief">${m.brief}</p>
+              </div>
+            </div>
           </div>
-          <div style="margin-top:4px;font-size:0.83rem;">${m.brief}</div>
-          <div class="mission-points">${m.points.toFixed(2)} pts</div>
+          <div class="tag-row">
+            <span class="tag">6.EE.C.9</span>
+            <span class="tag dok${m.dok}">DOK ${m.dok}</span>
+            <span class="tag points">${m.points.toFixed(0)} pt${m.points > 1 ? "s" : ""}</span>
+            ${gameState.completed.has(m.id) ? `<span class="tag" style="background:#ecfdf5;color:#166534;border-color:#b7ebc5;">Completed</span>` : ""}
+          </div>
         `;
         card.addEventListener("click", () => selectMission(m.id));
-        missionListElem.appendChild(card);
+        missionGrid.appendChild(card);
       });
     }
 
-    function selectMission(id) {
-      currentMission = missions.find(m => m.id === id);
-      if (!currentMission) return;
-
-      document.querySelectorAll(".mission-card").forEach(card => {
-        card.classList.toggle("active", card.dataset.id === id);
-      });
-
-      missionTitleElem.textContent = currentMission.title;
-      missionDescElem.textContent = currentMission.description;
-      missionContentElem.innerHTML = "";
-      currentMission.buildContent(missionContentElem);
-      feedbackElem.style.display = "none";
-      feedbackElem.textContent = "";
+    function selectMission(id){
+      const mission = missions.find(m => m.id === id);
+      if(!mission) return;
+      gameState.currentMissionId = id;
+      missionTitle.textContent = `${mission.id} • ${mission.title}`;
+      missionDescription.textContent = mission.description;
+      missionBriefing.textContent = mission.story;
+      missionStatusChip.textContent = `Mission: ${mission.id}`;
+      missionDokChip.textContent = `DOK: ${mission.dok}`;
+      missionPointsChip.textContent = `Possible Points: ${mission.points}`;
+      missionContent.innerHTML = "";
+      mission.build(missionContent);
+      feedbackBox.className = "feedback";
+      feedbackBox.innerHTML = "";
       checkBtn.disabled = false;
       recordBtn.disabled = false;
-      clearBtn.disabled = false;
-      statusMissionElem.textContent = `Mission: ${currentMission.id} • ${currentMission.title}`;
-      statusPointsElem.textContent = `Possible points: ${currentMission.points.toFixed(2)} • Estimated DOK: ${currentMission.dok}`;
+      retryBtn.disabled = false;
+      nextBtn.disabled = false;
+      renderMissionCards();
+      updateDashboard();
+      document.getElementById("active-mission").classList.remove("celebrate");
+      void document.getElementById("active-mission").offsetWidth;
+      document.getElementById("active-mission").classList.add("celebrate");
     }
 
-    function gatherCurrentInputs() {
-      if (!currentMission) return {};
-      const container = missionContentElem;
-      const inputs = container.querySelectorAll("input, textarea, select, .graph-cell");
+    function gatherCurrentInputs(){
       const data = {};
-      inputs.forEach((el, idx) => {
-        if (el.classList.contains("graph-cell")) {
-          // Only store active cells once at the top-level
-          return;
-        }
-        const key = el.id || `${el.tagName.toLowerCase()}_${idx}`;
-        if (el.tagName === "SELECT") {
-          data[key] = el.value;
-        } else {
-          data[key] = el.value;
-        }
+      missionContent.querySelectorAll("input, textarea, select").forEach(el => {
+        data[el.id || el.name || "input"] = el.value;
       });
-
-      // Handle graph selections as a list of coordinates
-      const graphCells = container.querySelectorAll(".graph-cell");
-      if (graphCells.length > 0) {
-        const active = [];
-        graphCells.forEach(cell => {
-          if (cell.classList.contains("active")) {
-            active.push(`(${cell.dataset.x},${cell.dataset.y})`);
-          }
-        });
-        data["graph_points"] = active.join(", ");
-      }
-
+      missionContent.querySelectorAll(".graph-grid").forEach(grid => {
+        const pts = [...grid.querySelectorAll(".graph-cell.active")]
+          .map(c => `(${c.dataset.x},${c.dataset.y})`)
+          .join(", ");
+        data[grid.id + "_points"] = pts;
+      });
       return data;
     }
 
-    function showFeedback(result) {
-      const { score, total, messages } = result;
-      const pct = total > 0 ? (score / total) : 0;
-      feedbackElem.innerHTML = messages.map(m => "• " + m).join("<br>");
-      feedbackElem.classList.remove("ok", "partial", "try");
-      if (pct === 1) {
-        feedbackElem.classList.add("ok");
-      } else if (pct >= 0.5) {
-        feedbackElem.classList.add("partial");
-      } else {
-        feedbackElem.classList.add("try");
-      }
-      feedbackElem.style.display = "block";
+    function classifyResult(score, total){
+      const pct = total ? score / total : 0;
+      if(pct === 1) return "ok";
+      if(pct >= 0.5) return "partial";
+      return "try";
     }
 
-    function onCheck() {
-      if (!currentMission) return;
-      const result = currentMission.check();
+    function showFeedback(result){
+      const type = classifyResult(result.score, result.total);
+      const pct = result.total ? Math.round((result.score / result.total) * 100) : 0;
+      feedbackBox.className = `feedback show ${type}`;
+      const title =
+        type === "ok" ? "Mission Cleared!" :
+        type === "partial" ? "Good Progress — Revise and Improve" :
+        "Keep Going — You’re Still Building It";
+      feedbackBox.innerHTML = `
+        <h3>${title} • ${result.score}/${result.total} (${pct}%)</h3>
+        <ul>${result.messages.map(m => `<li>${m}</li>`).join("")}</ul>
+      `;
+      playTone(type);
+    }
+
+    function nextMissionId(){
+      if(!gameState.currentMissionId) return missions[0]?.id || null;
+      const idx = missions.findIndex(m => m.id === gameState.currentMissionId);
+      if(idx === -1) return missions[0]?.id || null;
+      return missions[(idx + 1) % missions.length].id;
+    }
+
+    function handleCheck(ev){
+      const mission = missions.find(m => m.id === gameState.currentMissionId);
+      if(!mission) return;
+      const result = mission.check();
+      gameState.totalChecks++;
+      gameState.totalEarned += result.score;
+      gameState.totalPossible += result.total;
+
       showFeedback(result);
+      const type = classifyResult(result.score, result.total);
+
+      if(type === "ok"){
+        gameState.streak++;
+        gameState.bestStreak = Math.max(gameState.bestStreak, gameState.streak);
+        gameState.completed.add(mission.id);
+        awardXp(18 + (mission.dok * 5), ev?.target || checkBtn);
+        if(result.total >= 2 && result.score === result.total && !gameState.badges.has("firstPerfect")){
+          awardBadge("firstPerfect");
+        }
+        if(gameState.streak >= 3){
+          awardBadge("streak3");
+        }
+        if(["M4","M7"].includes(mission.id)){
+          awardBadge("graphHero");
+        }
+        if(["M1","M3","M5","M10"].includes(mission.id)){
+          awardBadge("writer");
+        }
+        if(gameState.completed.size >= 1){
+          awardBadge("finisher");
+        }
+        makeSparks(window.innerWidth * 0.5, 150);
+      }else if(type === "partial"){
+        gameState.streak = 0;
+        awardXp(8, ev?.target || checkBtn);
+      }else{
+        gameState.streak = 0;
+        awardXp(3, ev?.target || checkBtn);
+      }
+
+      updateDashboard();
+      renderMissionCards();
     }
 
-    function onRecord() {
-      if (!currentMission) return;
-      const studentName = document.getElementById("student-name").value || "Unnamed student";
-      const inputs = gatherCurrentInputs();
-      const time = new Date().toLocaleString();
-      const result = currentMission.check();
-      const pct = result.total > 0 ? ((result.score / result.total) * 100).toFixed(0) : "0";
-      let text = "";
+    function handleRetry(){
+      const mission = missions.find(m => m.id === gameState.currentMissionId);
+      if(!mission) return;
+      selectMission(mission.id);
+    }
 
-      Object.keys(inputs).forEach(key => {
-        text += `  ${key}: ${inputs[key]}\n`;
-      });
+    function handleRecord(){
+      const mission = missions.find(m => m.id === gameState.currentMissionId);
+      if(!mission) return;
+      const studentName = document.getElementById("student-name").value.trim() || "Unnamed student";
+      const now = new Date().toLocaleString();
+      const inputs = gatherCurrentInputs();
+      const result = mission.check();
+      const pct = result.total ? Math.round((result.score / result.total) * 100) : 0;
 
       const entry = document.createElement("div");
-      entry.className = "log-entry";
+      entry.className = "log-item";
       entry.innerHTML = `
-        <span class="time-tag">${time}</span>
-        <span class="mission-tag">${currentMission.id} – ${currentMission.title}</span>
-        <br/>
-        Student: ${studentName}<br/>
-        Raw score (check engine): ${result.score}/${result.total} (~${pct}%)
-        <br/>
-        Inputs:
-        <pre style="margin:2px 0 0 0;">${text || "No inputs recorded."}</pre>
+        <div class="meta">
+          <span>${now}</span>
+          <span>${studentName}</span>
+          <span>${mission.id} • ${mission.title}</span>
+          <span>${result.score}/${result.total} (${pct}%)</span>
+        </div>
+        <div class="tiny">Mode: ${document.getElementById("mode-select").value} • Level: ${currentLevelName()} • XP: ${gameState.xp}</div>
+        <pre>${Object.entries(inputs).map(([k,v]) => `${k}: ${v || "(blank)"}`).join("\n")}</pre>
       `;
-      logEntriesElem.appendChild(entry);
-      logEntriesElem.scrollTop = logEntriesElem.scrollHeight;
-      alert("Your work has been recorded in the Teacher Review Log at the bottom of the page.");
+      logList.prepend(entry);
+      showBurst("Recorded for Teacher", window.innerWidth * 0.55, window.innerHeight * 0.18, "#1d4ed8");
     }
 
-    function onClear() {
-      if (!currentMission) return;
-      const container = missionContentElem;
-      container.querySelectorAll("input, textarea, select").forEach(el => {
-        if (el.tagName === "SELECT") {
-          el.selectedIndex = 0;
-        } else {
-          el.value = "";
-        }
+    function shuffleMissions(){
+      for(let i = missions.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [missions[i], missions[j]] = [missions[j], missions[i]];
+      }
+      renderMissionCards();
+    }
+
+    function exportLog(){
+      const lines = [];
+      lines.push("Teacher Review Log");
+      lines.push("==================");
+      [...logList.querySelectorAll(".log-item")].forEach((item, idx) => {
+        lines.push(`Entry ${idx + 1}`);
+        lines.push(item.innerText.trim());
+        lines.push("");
       });
-      container.querySelectorAll(".graph-cell").forEach(cell => {
-        cell.classList.remove("active");
+      const text = lines.join("\n");
+      navigator.clipboard.writeText(text).then(() => {
+        showBurst("Teacher log copied", window.innerWidth * 0.55, 120, "#1d4ed8");
+      }).catch(() => {
+        alert("Could not copy automatically. Please copy manually from the log.");
       });
-      feedbackElem.style.display = "none";
-      feedbackElem.textContent = "";
     }
 
-    function toggleLog() {
-      logEntriesElem.classList.toggle("hidden");
+    function toggleLog(){
+      gameState.logCollapsed = !gameState.logCollapsed;
+      logList.classList.toggle("hidden", gameState.logCollapsed);
     }
 
-    // Attach event listeners
-    checkBtn.addEventListener("click", onCheck);
-    recordBtn.addEventListener("click", onRecord);
-    clearBtn.addEventListener("click", onClear);
+    function clearLog(){
+      logList.innerHTML = "";
+    }
 
-    // Initialize mission cards
+    checkBtn.addEventListener("click", handleCheck);
+    recordBtn.addEventListener("click", handleRecord);
+    retryBtn.addEventListener("click", handleRetry);
+    nextBtn.addEventListener("click", () => {
+      const id = nextMissionId();
+      if(id) selectMission(id);
+    });
+    shuffleBtn.addEventListener("click", shuffleMissions);
+    coachBtn.addEventListener("click", updateCoachTip);
+    exportLogBtn.addEventListener("click", exportLog);
+    toggleLogBtn.addEventListener("click", toggleLog);
+    clearLogBtn.addEventListener("click", clearLog);
+
+    updateCoachTip();
     renderMissionCards();
+    updateDashboard();
+    selectMission("M1");
   </script>
 </body>
 </html>
